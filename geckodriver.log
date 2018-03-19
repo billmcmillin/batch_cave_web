@@ -18,3 +18,27 @@
 1521484250118	Marionette	INFO	Listening on port 41633
 1521484250210	Marionette	WARN	TLS certificate errors will be ignored for this session
 *** UTM:SVC TimerManager:registerTimer called after profile-before-change notification. Ignoring timer registration for id: telemetry_modules_ping
+1521484555802	geckodriver	INFO	geckodriver 0.19.1
+1521484555806	geckodriver	INFO	Listening on 127.0.0.1:48732
+1521484556936	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "-marionette" "-profile" "/tmp/rust_mozprofile.tzTicrdKG1Cp"
+1521484557730	Marionette	INFO	Enabled via --marionette
+1521484560236	Marionette	INFO	Listening on port 45752
+1521484560320	Marionette	WARN	TLS certificate errors will be ignored for this session
+*** UTM:SVC TimerManager:registerTimer called after profile-before-change notification. Ignoring timer registration for id: telemetry_modules_ping
+1521484593778	geckodriver	INFO	geckodriver 0.19.1
+1521484593781	geckodriver	INFO	Listening on 127.0.0.1:32779
+1521484593903	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "-marionette" "-profile" "/tmp/rust_mozprofile.dKAWyJMUlPEg"
+1521484594636	Marionette	INFO	Enabled via --marionette
+1521484597116	Marionette	INFO	Listening on port 35695
+1521484597182	Marionette	WARN	TLS certificate errors will be ignored for this session
+*** UTM:SVC TimerManager:registerTimer called after profile-before-change notification. Ignoring timer registration for id: telemetry_modules_ping
+1521484865620	geckodriver	INFO	geckodriver 0.19.1
+1521484865624	geckodriver	INFO	Listening on 127.0.0.1:36136
+1521484866742	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "-marionette" "-profile" "/tmp/rust_mozprofile.bqrmiX4sKO9q"
+1521484867536	Marionette	INFO	Enabled via --marionette
+1521484870498	Marionette	INFO	Listening on port 42025
+1521484870532	Marionette	WARN	TLS certificate errors will be ignored for this session
+[GFX1-]: Receive IPC close with reason=AbnormalShutdown
+[Child 12089, Chrome_ChildThread] WARNING: pipe error (3): Connection reset by peer: file /build/firefox-CQifnS/firefox-59.0.1+build1/ipc/chromium/src/chrome/common/ipc_channel_posix.cc, line 353
+[GFX1-]: Receive IPC close with reason=AbnormalShutdown
+[Child 12045, Chrome_ChildThread] WARNING: pipe error (3): Connection reset by peer: file /build/firefox-CQifnS/firefox-59.0.1+build1/ipc/chromium/src/chrome/common/ipc_channel_posix.cc, line 353
