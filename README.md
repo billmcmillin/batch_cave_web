@@ -18,6 +18,13 @@ conda install selenium=3.9.0```
 * the .env file contains the variable 'DJANGOKEY' 
 * run ```source .env``` from batchmobile root dir to add it to environment
 
+## The structure
+* The root-level directory, batchmobile, contains configuration files and odds and ends related to dev and testing
+* batchcave is the folder for project-wide settings. No content lives here
+* converter is the app that contains models, views, etc.
+* why so many names? To avoid namespace issues when importing modules, avoid repeating names further up the directory structure
+
+
 ## Functional/Acceptance Tests
 
 
