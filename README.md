@@ -14,6 +14,9 @@ source activate batchcave
 ```conda install django=1.11.3
 conda install selenium=3.9.0```
 
+### Environment Variables
+* the .env file contains the variable 'DJANGOKEY' 
+* run ```source .env``` from batchmobile root dir to add it to environment
 
 ## Functional/Acceptance Tests
 
