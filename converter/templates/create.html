@@ -1,0 +1,17 @@
+<html>
+    <head>
+    <title>Create New Conversion</title>
+    </head>
+    <body>
+    <h2>Begin New Conversion</h2>
+      <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <input name="conversion_name" id="id_new_conversion" placeholder="Give it a name" />
+        <button type="submit">Submit</button>
+      </form>
+    <table id="id_list_table">
+        <tr><td>{{ new_conversion_text }}</td></tr>
+    </table>
+    </body>
+</html>
