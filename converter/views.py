@@ -5,12 +5,13 @@ def home_page(request):
     return render(request, 'home.html')
 
 def index(request):
-    return render(request, 'index.html')
+    convs = Conversion.objects.all()
+    return render(request, 'index.html', {'Conversions': convs})
 
 def create(request):
     if request.method == 'POST':
         Conversion.objects.create(name=request.POST['conversion_name'])
         return redirect('/conversions/index')
 
-    return render(request, '/conversions/create.html')
+    return render(request, 'create.html')
 

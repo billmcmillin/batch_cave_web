@@ -49,11 +49,12 @@ class NewConversionTest(unittest.TestCase):
 
         self.assertIn('Create New Conversion', self.browser.title)
 
-        inputbox = self.browser.find_element_by_id('id_new_conversion')
+        inputbox = self.browser.find_element_by_id("id_new_conversion")
         inputbox.send_keys('peacock feathers')
         inputbox.send_keys(Keys.ENTER)
         time.sleep(1)
 
+        self.browser.get('http://localhost:8000/conversions/create')
         #user enters a second item
         inputbox = self.browser.find_element_by_id('id_new_conversion')
         inputbox.send_keys('turtle feathers')

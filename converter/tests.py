@@ -35,6 +35,15 @@ class ConversionViewsTest(TestCase):
         self.assertTemplateUsed(response, 'index.html')
         self.assertEqual(Conversion.objects.count(), 0)
 
+    def test_displays_all_conversions(self):
+        Conversion.objects.create(name='First one')
+        Conversion.objects.create(name='Second one')
+
+        response = self.client.get('/conversions/index')
+
+        self.assertIn('First one', response.content.decode())
+        self.assertIn('Second one', response.content.decode())
+
 class ConversionModelTest(TestCase):
 
     def test_saving_and_retrieving_conversions(self):
