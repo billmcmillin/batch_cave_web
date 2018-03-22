@@ -1,7 +1,11 @@
 from django.test import LiveServerTestCase
 from selenium import webdriver
+from selenium.common.exceptions import WebDriverException
 from selenium.webdriver.common.keys import Keys
 import time
+
+
+
 
 class NewVisitorTest(LiveServerTestCase):
 

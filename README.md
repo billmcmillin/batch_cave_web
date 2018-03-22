@@ -44,5 +44,5 @@ Tests are isolated with the LiveServerTestCase class.
 
 
 ## Unit Tests
-
-
+Run with
+```python3 manage.py test converter```
