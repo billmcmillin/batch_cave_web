@@ -37,6 +37,10 @@ saved_c = Conversion.objects.first()
 ```
 
 ## Functional/Acceptance Tests
+Functional tests are in converter/functional_tests. Run with
+```python3 manage.py test functional_tests```
+
+Tests are isolated with the LiveServerTestCase class.
 
 
 ## Unit Tests

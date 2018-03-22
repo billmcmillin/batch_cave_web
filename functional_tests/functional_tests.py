@@ -1,9 +1,9 @@
-from django.test import LiveServerTestCase
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 import time
+import unittest
 
-class NewVisitorTest(LiveServerTestCase):
+class NewVisitorTest(unittest.TestCase):
 
     def setUp(self):
         self.browser = webdriver.Firefox()
@@ -12,7 +12,7 @@ class NewVisitorTest(LiveServerTestCase):
         self.browser.quit()
 
     def test_can_make_conversion_and_retrieve_it_later(self):
-        self.browser.get(self.live_server_url)
+        self.browser.get('http://localhost:8000')
 
         # User navigates to homepage and sees correct title
         self.assertIn('Batchcave', self.browser.title)
@@ -30,7 +30,7 @@ class NewVisitorTest(LiveServerTestCase):
         second_choice = self.browser.find_element_by_id('id_menu_indexConversion')
         self.assertIn('View Past Conversions', second_choice.text)
 
-class NewConversionTest(LiveServerTestCase):
+class NewConversionTest(unittest.TestCase):
 
     def setUp(self):
         self.browser = webdriver.Firefox()
@@ -65,3 +65,5 @@ class NewConversionTest(LiveServerTestCase):
         self.check_for_row_in_list_table('peacock feathers')
         self.check_for_row_in_list_table('turtle feathers')
 
+if __name__ == '__main__':
+    unittest.main(warnings='ignore')
