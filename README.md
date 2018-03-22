@@ -25,6 +25,17 @@ conda install selenium=3.9.0```
 * why so many names? To avoid namespace issues when importing modules, avoid repeating names further up the directory structure
 
 
+## Command Line
+```
+python3
+import django
+django.setup()
+c = Conversion()
+c.name = 'testing'
+c.save()
+saved_c = Conversion.objects.first()
+```
+
 ## Functional/Acceptance Tests
 
 

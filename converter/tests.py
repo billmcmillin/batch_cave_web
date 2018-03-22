@@ -17,12 +17,23 @@ class HomePageTest(TestCase):
         self.assertTemplateUsed(response, 'home.html')
 
 
-class ConversionTest(TestCase):
+class ConversionViewsTest(TestCase):
 
     def test_can_save_a_POST_request(self):
+        self.client.post('/conversions/create/', data={'conversion_name': 'A new conversion'})
+        self.assertEqual(Conversion.objects.count(), 1)
+        new_conv = Conversion.objects.first()
+        self.assertEqual('A new conversion', new_conv.name)
+
+    def test_redirects_after_POST(self):
         response = self.client.post('/conversions/create/', data={'conversion_name': 'A new conversion'})
-        self.assertIn('A new conversion', response.content.decode())
-        self.assertTemplateUsed(response, 'create.html')
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response['location'], '/conversions/index')
+
+    def test_only_saves_when_needed(self):
+        response = self.client.get('/conversions/index')
+        self.assertTemplateUsed(response, 'index.html')
+        self.assertEqual(Conversion.objects.count(), 0)
 
 class ConversionModelTest(TestCase):
 

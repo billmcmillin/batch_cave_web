@@ -19,8 +19,8 @@ from converter import views
 
 urlpatterns = [
     url(r'^$', views.home_page, name='home'),
-    #url(r'^conversions/$', views.index, name='index'),
-    #url(r'^conversions/index$', views.index, name='index'),
+    url(r'^conversions/$', views.index, name='index'),
+    url(r'^conversions/index$', views.index, name='index'),
     # ex: /conversions/create
      url(r'^conversions/create/$', views.create, name='create'),
 ]
