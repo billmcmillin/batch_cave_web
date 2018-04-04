@@ -4,8 +4,7 @@ from selenium.common.exceptions import WebDriverException
 from selenium.webdriver.common.keys import Keys
 import time
 
-
-
+MAX_WAIT = 10
 
 class NewVisitorTest(LiveServerTestCase):
 
@@ -42,10 +41,18 @@ class NewConversionTest(LiveServerTestCase):
     def tearDown(self):
         self.browser.quit()
 
-    def check_for_row_in_list_table(self, row_text):
-        table = self.browser.find_element_by_id('id_list_table')
-        rows = table.find_elements_by_tag_name('tr')
-        self.assertIn(row_text, [row.text for row in rows])
+    def wait_for_row_in_table(self, row_text):
+        start_time = time.time()
+        while True:
+            try:
+                table = self.browser.find_element_by_id('id_list_table')
+                rows = table.find_elements_by_tag_name('tr')
+                self.assertIn(row_text, [row.text for row in rows])
+                return
+            except (AssertionError,WebDriverException) as e:
+                if time.time() - start_time > MAX_WAIT:
+                    raise e
+                time.sleep(0.5)
 
     def test_can_make_conversion_and_retrieve_it_later(self):
         # User navigates to new conversion page and sees correct title
@@ -56,16 +63,17 @@ class NewConversionTest(LiveServerTestCase):
         inputbox = self.browser.find_element_by_id("id_new_conversion")
         inputbox.send_keys('peacock feathers')
         inputbox.send_keys(Keys.ENTER)
-        time.sleep(1)
+        self.wait_for_row_in_table('peacock feathers')
 
         self.browser.get('http://localhost:8000/conversions/create')
         #user enters a second item
         inputbox = self.browser.find_element_by_id('id_new_conversion')
         inputbox.send_keys('turtle feathers')
         inputbox.send_keys(Keys.ENTER)
-        time.sleep(1)
+
+        self.wait_for_row_in_table('turtle feathers')
 
         #page updates and shows both conversion names entered
-        self.check_for_row_in_list_table('peacock feathers')
-        self.check_for_row_in_list_table('turtle feathers')
+        self.wait_for_row_in_table('peacock feathers')
+        self.wait_for_row_in_table('turtle feathers')
 
