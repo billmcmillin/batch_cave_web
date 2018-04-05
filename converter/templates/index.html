@@ -2,7 +2,7 @@
 
 {% block content %}
     <h2>Completed Conversions</h2>
-        <table>
+        <table id="id_list_table" class="table">
        {% for item in Conversions %}
             <tr><td>{{ forloop.counter }}: {{ item.name }}</td>
                 <td><a href="/download_original/{{ item.pk }}">Download

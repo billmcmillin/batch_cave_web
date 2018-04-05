@@ -2,6 +2,7 @@ from django.urls import resolve
 from django.test import TestCase
 from django.http import HttpRequest
 from converter.models import Conversion
+from converter.forms import ConversionForm
 
 from converter.views import home_page
 
@@ -67,3 +68,9 @@ class ConversionModelTest(TestCase):
         second_saved_item = saved_items[1]
         self.assertEqual(first_saved_item.name, 'The first ever conversion')
         self.assertEqual(second_saved_item.name, 'Conversion the second')
+
+class ConversionFormTest(TestCase):
+
+    def test_form_name_input_has_placeholder_and_css(self):
+        form = ConversionForm()
+        self.assertIn('class="form-control input-lg"', form.as_p())

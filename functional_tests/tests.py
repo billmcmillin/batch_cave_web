@@ -18,7 +18,7 @@ class NewVisitorTest(LiveServerTestCase):
         self.browser.get(self.live_server_url)
 
         # User navigates to homepage and sees correct title
-        self.assertIn('Batchcave', self.browser.title)
+        self.assertIn('BatchCave', self.browser.title)
 
         # user is presented with options for creating a new conversion or
         # viewing past conversions
@@ -69,7 +69,7 @@ class NewConversionTest(LiveServerTestCase):
         # User navigates to new conversion page and sees correct title
         self.browser.get('http://localhost:8000/conversions/create')
 
-        self.assertIn('Create New Conversion', self.browser.title)
+        self.assertIn('BatchCave', self.browser.title)
 
         inputbox = self.browser.find_element_by_id("id_new_conversion")
         inputbox.send_keys('peacock feathers')

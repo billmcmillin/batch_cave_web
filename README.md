@@ -24,6 +24,10 @@ conda install selenium=3.9.0```
 * converter is the app that contains models, views, etc.
 * why so many names? To avoid namespace issues when importing modules, avoid repeating names further up the directory structure
 
+### Apps
+* The admin app has been disabled
+* converter is the app with most code and tests
+* many settings are in batch_cave/settings.py
 
 ## Command Line
 ```
@@ -46,3 +50,9 @@ Tests are isolated with the LiveServerTestCase class.
 ## Unit Tests
 Run with
 ```python3 manage.py test converter```
+
+
+## Static Files
+All static files are currently in converter/static
+If there are additional apps in the future, it will be best to collect them all in to one static directory for serving. This has been configured in settings.py as /static in the root dir of the project. Collect all static filles into this folder with
+```python3 manage.py collectstatic```
