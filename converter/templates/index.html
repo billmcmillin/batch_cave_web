@@ -1,13 +1,20 @@
-<html>
-    <head>
-    <title>Past Conversions</title>
-    </head>
-    <body>
-    <h2>Past Conversions</h2>
-    <table id="id_list_table">
-        {% for conv in Conversions %}
-            <tr><td>{{ conv.name }}</td></tr>
+{% extends 'base.html' %}
+
+{% block content %}
+    <h2>Completed Conversions</h2>
+  <div class="container">
+    <div class="row">
+      <div class="col-md-6 col-md-offset-3">
+        <table>
+       {% for item in Conversions %}
+            <tr><td>{{ forloop.counter }}: {{ item.name }}</td>
+                <td><a href="/download_original/{{ item.pk }}">Download
+    Original</a></td>
+                <td><a href="/download/{{ item.pk }}">Download Result</a></td>
+                <td>{{ item.RecordsIn }}</td>
+            </tr>
         {% endfor %}
-    </table>
-    </body>
-</html>
+        </table>
+    </div>
+  </div>
+    {% endblock %}

@@ -30,6 +30,10 @@ class ConversionViewsTest(TestCase):
         self.assertEqual(response.status_code, 302)
         self.assertEqual(response['location'], '/conversions/index')
 
+    def test_uses_conv_index_template(self):
+        response = self.client.get('/conversions/index')
+        self.assertTemplateUsed(response, 'index.html')
+
     def test_only_saves_when_needed(self):
         response = self.client.get('/conversions/index')
         self.assertTemplateUsed(response, 'index.html')
@@ -41,8 +45,9 @@ class ConversionViewsTest(TestCase):
 
         response = self.client.get('/conversions/index')
 
-        self.assertIn('First one', response.content.decode())
-        self.assertIn('Second one', response.content.decode())
+        self.assertContains(response, 'First one')
+        self.assertContains(response, 'Second one')
+
 
 class ConversionModelTest(TestCase):
 
