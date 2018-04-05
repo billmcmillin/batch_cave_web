@@ -1,27 +1,24 @@
 <!DOCTYPE html>
 <html lang="en">
-{% load static %}
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>BatchCave</title>
-    <link href="/static/bootstrap/css/bootstrap.min.css" "rel="stylesheet"></link>
+    <link href="/static/bootstrap/css/bootstrap.min.css" rel="stylesheet"></link>
+    <link href="/static/base.css" rel="stylesheet"></link>
   </head>
   <body>
     <div class="container">
-		<div class="col-md-12 col-md-offset-5 jumbotron">
-			<div class="text-center">
-					<h1>{% block header_text %}BatchCave{% endblock %}</h1>
-		{% if error %}
-		<div class="form-group has-error">
-			<span class="help-block">{{ error }}</span>
-		</div>
-		{% endif %}
-		{% block content %}
-		{% endblock %}
-	    	</div>
-	    </div>
+        <div class="row">
+            <div class="col-md-6 col-md-offset-3 jumbotron">
+                <div class="text-center">
+                <h1>{% block header_text %}Batchcave{% endblock %}</h1>
+                {% block content %}
+                {% endblock %}
+                </div>
+            </div>
+        </div>
     </div>
   </body>
 </html>

@@ -18,7 +18,7 @@ from django.contrib import admin
 from converter import views
 
 urlpatterns = [
-    url(r'^$', views.home_page, name='home'),
+    url(r'^$', views.home_page, name='home_page'),
     url(r'^conversions/$', views.index, name='index'),
     url(r'^conversions/index$', views.index, name='index'),
     # ex: /conversions/create

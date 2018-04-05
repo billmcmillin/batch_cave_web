@@ -2,9 +2,6 @@
 
 {% block content %}
     <h2>Completed Conversions</h2>
-  <div class="container">
-    <div class="row">
-      <div class="col-md-6 col-md-offset-3">
         <table>
        {% for item in Conversions %}
             <tr><td>{{ forloop.counter }}: {{ item.name }}</td>
@@ -15,6 +12,4 @@
             </tr>
         {% endfor %}
         </table>
-    </div>
-  </div>
-    {% endblock %}
+{% endblock %}
