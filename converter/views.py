@@ -10,7 +10,7 @@ def index(request):
 
 def create(request):
     if request.method == 'POST':
-        Conversion.objects.create(name=request.POST['conversion_name'])
+        Conversion.objects.create(Name=request.POST['conversion_name'])
         return redirect('/conversions/index')
 
     return render(request, 'create.html')

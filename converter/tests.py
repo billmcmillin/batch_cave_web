@@ -2,7 +2,6 @@ from django.urls import resolve
 from django.test import TestCase
 from django.http import HttpRequest
 from converter.models import Conversion
-from converter.forms import ConversionForm
 
 from converter.views import home_page
 
@@ -24,7 +23,7 @@ class ConversionViewsTest(TestCase):
         self.client.post('/conversions/create/', data={'conversion_name': 'A new conversion'})
         self.assertEqual(Conversion.objects.count(), 1)
         new_conv = Conversion.objects.first()
-        self.assertEqual('A new conversion', new_conv.name)
+        self.assertEqual('A new conversion', new_conv.Name)
 
     def test_redirects_after_POST(self):
         response = self.client.post('/conversions/create/', data={'conversion_name': 'A new conversion'})
@@ -41,8 +40,8 @@ class ConversionViewsTest(TestCase):
         self.assertEqual(Conversion.objects.count(), 0)
 
     def test_displays_all_conversions(self):
-        Conversion.objects.create(name='First one')
-        Conversion.objects.create(name='Second one')
+        Conversion.objects.create(Name='First one')
+        Conversion.objects.create(Name='Second one')
 
         response = self.client.get('/conversions/index')
 
@@ -54,11 +53,11 @@ class ConversionModelTest(TestCase):
 
     def test_saving_and_retrieving_conversions(self):
         first_conversion = Conversion()
-        first_conversion.name = 'The first ever conversion'
+        first_conversion.Name = 'The first ever conversion'
         first_conversion.save()
 
         second_conversion = Conversion()
-        second_conversion.name = 'Conversion the second'
+        second_conversion.Name = 'Conversion the second'
         second_conversion.save()
 
         saved_items = Conversion.objects.all()
@@ -66,11 +65,6 @@ class ConversionModelTest(TestCase):
 
         first_saved_item = saved_items[0]
         second_saved_item = saved_items[1]
-        self.assertEqual(first_saved_item.name, 'The first ever conversion')
-        self.assertEqual(second_saved_item.name, 'Conversion the second')
+        self.assertEqual(first_saved_item.Name, 'The first ever conversion')
+        self.assertEqual(second_saved_item.Name, 'Conversion the second')
 
-class ConversionFormTest(TestCase):
-
-    def test_form_name_input_has_placeholder_and_css(self):
-        form = ConversionForm()
-        self.assertIn('class="form-control input-lg"', form.as_p())
