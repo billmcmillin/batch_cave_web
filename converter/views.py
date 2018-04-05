@@ -1,5 +1,6 @@
 from django.shortcuts import redirect, render
 from converter.models import Conversion
+from converter.forms import ConversionForm
 
 def home_page(request):
     return render(request, 'home.html')
@@ -10,8 +11,12 @@ def index(request):
 
 def create(request):
     if request.method == 'POST':
-        Conversion.objects.create(Name=request.POST['conversion_name'])
-        return redirect('/conversions/index')
+        formObj = ConversionForm(request.POST, request.FILES)
+        if formObj.isvalid():
+            formObj.save()
+            return redirect('/conversions/index')
+    else:
+        formObj = ConversionForm()
 
-    return render(request, 'create.html')
+    return render(request, 'create.html', {'form':  formObj})
 

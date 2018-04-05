@@ -5,7 +5,6 @@ from converter.modelsdir import batchEdits
 import inspect
 from django.conf import settings
 
-# Create your models here.
 class Conversion(models.Model):
     Name = models.TextField(default='')
     TYPE_CHOICES = [

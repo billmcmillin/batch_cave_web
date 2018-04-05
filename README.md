@@ -56,3 +56,7 @@ Run with
 All static files are currently in converter/static
 If there are additional apps in the future, it will be best to collect them all in to one static directory for serving. This has been configured in settings.py as /static in the root dir of the project. Collect all static filles into this folder with
 ```python3 manage.py collectstatic```
+
+## The database
+Flush development db with
+```python3 manage.py flush```
