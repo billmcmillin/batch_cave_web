@@ -12,7 +12,7 @@ def index(request):
 def create(request):
     if request.method == 'POST':
         formObj = ConversionForm(request.POST, request.FILES)
-        if formObj.isvalid():
+        if formObj.is_valid():
             formObj.save()
             return redirect('/conversions/index')
     else:

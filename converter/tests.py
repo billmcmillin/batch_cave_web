@@ -1,6 +1,7 @@
 from django.urls import resolve
 from django.test import TestCase
 from django.http import HttpRequest
+from django.core.files.uploadedfile import SimpleUploadedFile
 from converter.models import Conversion
 
 from converter.views import home_page
@@ -18,15 +19,21 @@ class HomePageTest(TestCase):
 
 
 class ConversionViewsTest(TestCase):
+    def get_test_file(self):
+        with open('/data/infiles/TEST.mrc', 'rb') as testMarc:
+            test_file = SimpleUploadedFile('TEST.mrc', testMarc.read())
+        return test_file
 
     def test_can_save_a_POST_request(self):
-        self.client.post('/conversions/create/', data={'conversion_name': 'A new conversion'})
+        test_file = self.get_test_file()
+        self.client.post('/conversions/create/', data={'Name': 'A new conversion', 'Type': 1, 'Upload': test_file})
         self.assertEqual(Conversion.objects.count(), 1)
         new_conv = Conversion.objects.first()
         self.assertEqual('A new conversion', new_conv.Name)
 
     def test_redirects_after_POST(self):
-        response = self.client.post('/conversions/create/', data={'conversion_name': 'A new conversion'})
+        test_file = self.get_test_file()
+        response =self.client.post('/conversions/create/', data={'Name': 'A new conversion', 'Type': 1, 'Upload': test_file})
         self.assertEqual(response.status_code, 302)
         self.assertEqual(response['location'], '/conversions/index')
 
