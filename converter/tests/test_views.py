@@ -1,22 +1,6 @@
-from django.urls import resolve
 from django.test import TestCase
-from django.http import HttpRequest
-from django.core.files.uploadedfile import SimpleUploadedFile
 from converter.models import Conversion
-
-from converter.views import home_page
-
-
-class HomePageTest(TestCase):
-
-    def test_root_url_resolves_to_home_page(self):
-        found = resolve('/')
-        self.assertEqual(found.func, home_page)
-
-    def test_uses_home_template(self):
-        response = self.client.get('/')
-        self.assertTemplateUsed(response, 'home.html')
-
+from django.core.files.uploadedfile import SimpleUploadedFile
 
 class ConversionViewsTest(TestCase):
     def get_test_file(self):
@@ -54,24 +38,3 @@ class ConversionViewsTest(TestCase):
 
         self.assertContains(response, 'First one')
         self.assertContains(response, 'Second one')
-
-
-class ConversionModelTest(TestCase):
-
-    def test_saving_and_retrieving_conversions(self):
-        first_conversion = Conversion()
-        first_conversion.Name = 'The first ever conversion'
-        first_conversion.save()
-
-        second_conversion = Conversion()
-        second_conversion.Name = 'Conversion the second'
-        second_conversion.save()
-
-        saved_items = Conversion.objects.all()
-        self.assertEqual(saved_items.count(), 2)
-
-        first_saved_item = saved_items[0]
-        second_saved_item = saved_items[1]
-        self.assertEqual(first_saved_item.Name, 'The first ever conversion')
-        self.assertEqual(second_saved_item.Name, 'Conversion the second')
-
