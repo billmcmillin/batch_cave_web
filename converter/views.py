@@ -13,7 +13,12 @@ def create(request):
     if request.method == 'POST':
         formObj = ConversionForm(request.POST, request.FILES)
         if formObj.is_valid():
-            formObj.save()
+            try:
+                formObj.full_clean()
+                formObj.save()
+            except ValidationError as ve:
+                error = ve
+                return render(request, 'create.html', {"error": error})
             return redirect('/conversions/index')
     else:
         formObj = ConversionForm()

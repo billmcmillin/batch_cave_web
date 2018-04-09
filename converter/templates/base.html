@@ -13,14 +13,14 @@
         <div class="row">
             <div class="col-md-6 col-md-offset-3 jumbotron">
                 <div class="text-center">
+                <h1>{% block header_text %}Batchcave{% endblock %}</h1>
+                {% block content %}
+                {% endblock %}
                 {% if error %}
                 <div class="form-group has-error">
                     <span class="help-block">{{ error }}</span>
                 </div>
                 {% endif %}
-                <h1>{% block header_text %}Batchcave{% endblock %}</h1>
-                {% block content %}
-                {% endblock %}
                 </div>
             </div>
         </div>

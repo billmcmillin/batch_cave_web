@@ -38,3 +38,16 @@ class ConversionViewsTest(TestCase):
 
         self.assertContains(response, 'First one')
         self.assertContains(response, 'Second one')
+
+    def test_validation_errors_sent_to_template(self):
+        test_file = self.get_test_file()
+        response =self.client.post('/conversions/create/', data={'Name': '', 'Type': 1, 'Upload': test_file})
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'create.html')
+        expected_error = "This field is required"
+        self.assertContains(response, expected_error)
+
+    def test_invalid_conversions_arent_saved(self):
+        test_file = self.get_test_file()
+        response =self.client.post('/conversions/create/', data={'Name': '', 'Type': 1, 'Upload': test_file})
+        self.assertEqual(Conversion.objects.count(), 0)

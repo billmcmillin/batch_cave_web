@@ -1,6 +1,7 @@
 from django.test import TestCase
 from converter.models import Conversion
 from django.core.files.uploadedfile import SimpleUploadedFile
+from django.core.exceptions import ValidationError
 
 class ConversionModelTest(TestCase):
 
@@ -21,3 +22,8 @@ class ConversionModelTest(TestCase):
         self.assertEqual(first_saved_item.Name, 'The first ever conversion')
         self.assertEqual(second_saved_item.Name, 'Conversion the second')
 
+    def test_cannot_save_empty_conversion(self):
+        conv = Conversion.objects.create()
+        with self.assertRaises(ValidationError):
+            conv.save()
+            conv.full_clean()
