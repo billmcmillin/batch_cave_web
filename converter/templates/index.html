@@ -2,6 +2,9 @@
 
 {% block content %}
     <h2>Completed Conversions</h2>
+        <div>
+            <a href="/conversions/create/">Create a New Conversion</a>
+        </div>
         <table id="id_list_table" class="table">
        {% for item in Conversions %}
             <tr><td>{{ forloop.counter }}: {{ item.Name }}</td>
