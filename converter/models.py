@@ -4,6 +4,10 @@ from django.core.files.storage import FileSystemStorage
 from converter.modelsdir import batchEdits
 import inspect
 from django.conf import settings
+from django.core.exceptions import ValidationError
+import datetime
+import pymarc
+from pymarc import MARCReader
 
 TYPE_CHOICES = [
     (0, 'None'),
@@ -18,7 +22,7 @@ class ValidateOnSaveMixin(object):
     def save(self, force_insert=False, force_update=False, **kwargs):
         if not (force_insert or force_update):
             self.TimeExecuted = datetime.datetime.now(datetime.timezone.utc)
-            self.ConvName = TYPE_CHOICES[self.Type]
+            self.ConvName = TYPE_CHOICES[self.Type][1]
             self.full_clean()
         super(ValidateOnSaveMixin, self).save(force_insert, force_update,
 **kwargs)
@@ -36,3 +40,30 @@ class Conversion(ValidateOnSaveMixin, models.Model):
     Output = models.FileField(upload_to='outfiles/', storage=download_storage,default=None)
     RecordsIn = models.PositiveIntegerField(default=0)
     RecordsOut = models.PositiveIntegerField(default=0)
+
+    def clean(self):
+        if self.Name is None:
+            raise ValidationError('Each conversion must have a name.')
+        if self.Upload is None:
+            raise ValidationError('Each conversion must have a file uploaded.')
+        if self.check_file() != 0:
+            raise ValidationError('MARC file does not validate')
+        if self.Type == 0:
+            raise ValidationError('Type must not be none.')
+
+    def check_file(self):
+        check_reader = MARCReader(self.Upload)
+        try:
+            for record in check_reader:
+                self.RecordsIn += 1
+        except:
+            return 1
+        self.make_conversion()
+        return 0
+
+    def make_conversion(self):
+        #convertype = self.Type
+        #conv_file = converttype(self.Upload)
+        conv_file = self.Upload
+        django_file = File(conv_file)
+        self.Output.save("Conversion_Results.mrc", django_file, save=False)
