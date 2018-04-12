@@ -17,8 +17,7 @@ class ConversionValidationTest(FunctionalTest):
         submitButton = self.browser.find_element_by_tag_name("form")
         submitButton.submit()
 
-        #Error message is displayed
-        self.wait_for(lambda: self.assertEqual(
-            self.browser.find_element_by_css_selector('.has-error').text,
-            "Conversion must have a name"
-        ))
+        #Browser won't send the request
+        self.wait_for(lambda:
+            self.browser.find_element_by_css_selector('#id_Name:invalid')
+        )

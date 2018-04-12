@@ -8,6 +8,7 @@
         <table id="id_list_table" class="table">
        {% for item in Conversions %}
             <tr><td>{{ forloop.counter }}: {{ item.Name }}</td>
+                <td>{{ item.ConvName }}</td>
                 <td><a href="/download_original/{{ item.pk }}">Download
     Original</a></td>
                 <td><a href="/download/{{ item.pk }}">Download Result</a></td>

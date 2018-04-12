@@ -15,7 +15,7 @@ class Conversion(models.Model):
     for idx, item in enumerate(functions):
         TYPE_CHOICES.append((idx+1, item[0]))
     Type = models.IntegerField(choices=TYPE_CHOICES,default=0)
-
+    ConvName = models.TextField(default='None')
     #file object for uploaded marc file
     #NOTE - ensure this is outside the server doc root
     upload_storage = FileSystemStorage(location=settings.MEDIA_ROOT,base_url='/data')
