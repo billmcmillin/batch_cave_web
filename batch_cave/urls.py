@@ -22,5 +22,7 @@ urlpatterns = [
     url(r'^conversions/$', views.index, name='index'),
     url(r'^conversions/index$', views.index, name='index'),
     # ex: /conversions/create
-     url(r'^conversions/create/$', views.create, name='create'),
+    url(r'^conversions/create/$', views.create, name='create'),
+url(r'^download/(?P<conversion_id>[0-9]+)/$', views.download, name='download'),
+    url(r'^download_original/(?P<conversion_id>[0-9]+)/$', views.download_original, name='download_original'),
 ]

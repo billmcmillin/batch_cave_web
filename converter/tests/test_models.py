@@ -64,4 +64,4 @@ class ConversionModelTest(TestCase):
         response =self.client.post('/conversions/create/', data={'Name': 'test conversion', 'Type': '2', 'Upload': test_file})
         saved_items = Conversion.objects.all()
         saved_conversion_name = saved_items[0].ConvName
-        self.assertEqual('ER_EAI_2ND', saved_conversion_name)
+        self.assertEqual('ER_EAI_2nd', saved_conversion_name)
