@@ -4,11 +4,11 @@ from converter.modelsdir.utilities import utilityFunctions
 class batchEdits:
 
     def __init__(self):
-        utilities = utilityFunctions()
+        self.utilities = utilityFunctions()
 
     def ER_EAI_2nd(self, x, name='ER-EAI-2ND'):
         print('\nRunning change script '+ name + '\n')
-        recs = utilities.BreakMARCFile(x)
+        recs = self.utilities.BreakMARCFile(x)
         for rec in recs:
             # Change =001 field to =002, and add 003
             rec.add_ordered_field(Field(tag = '002',data = rec['001'].value()))
@@ -20,18 +20,18 @@ class batchEdits:
             rec.add_ordered_field(Field(tag = '949', indicators = ['\\', '1'], subfields = ['l','uint', 'r', 's', 't', '99']))
             rec.add_ordered_field(Field(tag = '730', indicators = ['0', '\\'], subfields = ['a','Early American imprints (Online).', 'n', 'Second series,', 'p','Shaw-Shoemaker.', '5', 'OCU']))
             rec.remove_field(rec.get_fields('008')[0])
-            rec = utilities.DeleteLocGov(rec)
-            rec = utilities.Standardize856_956(rec)
-            rec = utilities.CharRefTrans(rec)
-        rec = utilities.SaveToMRK(recs, filename)
-        x = utilities.MakeMARCFile(recs, filename)
+            rec = self.utilities.DeleteLocGov(rec)
+            rec = self.utilities.Standardize856_956(rec)
+            rec = self.utilities.CharRefTrans(rec)
+        rec = self.utilities.SaveToMRK(recs, filename)
+        x = self.utilities.MakeMARCFile(recs, filename)
         return x
 
 
     def ER_EAI_1st(self, x, name='ER-EAI-1st'):
         print('\nRunning change script '+ name + '\n')
         #iterate over list of Record objects
-        recs = utilities.BreakMARCFile(x)
+        recs = self.utilities.BreakMARCFile(x)
         for rec in recs:
             # Change =001 field to =002, and add 003
             rec.add_ordered_field(Field(tag = '002',data = rec['001'].value()))
@@ -43,11 +43,11 @@ class batchEdits:
             rec.add_ordered_field(Field(tag = '730', indicators = ['0', '\\'],subfields = ['a','Early American imprints (Online).', 'n', 'First series,','p','Evans.', '5', 'OCU']))
             rec.add_ordered_field(Field(tag = '506', indicators = ['\\', ''], subfields = ['a','Access restricted to users at subscribing institutions']))
             rec.remove_field(rec.get_fields('008')[0])
-            rec = utilities.DeleteLocGov(rec)
-            rec = utilities.Standardize856_956(rec, 'Readex')
-            rec = utilities.CharRefTrans(rec)
-        rec = utilities.SaveToMRK(recs, filename)
-        x = utilities.MakeMARCFile(recs, filename)
+            rec = self.utilities.DeleteLocGov(rec)
+            rec = self.utilities.Standardize856_956(rec, 'Readex')
+            rec = self.utilities.CharRefTrans(rec)
+        rec = self.utilities.SaveToMRK(recs, filename)
+        x = self.utilities.MakeMARCFile(recs, filename)
         return x
 
 ########### TODO: add ER_OECD ################
@@ -55,7 +55,7 @@ class batchEdits:
 
     def ER_OCLC_WCS_SDebk(self, x, name='ER-OCLC-WCS-SDebk'):
         print('\nRunning change script '+ name + '\n')
-        recs = utilities.BreakMARCFile(x)
+        recs = self.utilities.BreakMARCFile(x)
         for rec in recs:
             rec.add_ordered_field(Field(tag = '949', indicators = ['\\', '1'], subfields = ['l','uint', 'r', 's', 't', '99']))
             rec.add_ordered_field(Field(tag = '949', indicators = ['\\', '\\'], subfields = ['a','*b3=z;bn=buint;']))
@@ -68,9 +68,9 @@ class batchEdits:
             #add colon to 956$3
             #x = re.sub('(?m)\$3ScienceDirect', '$3ScienceDirect :', x)
             rec['956']['3'] = re.sub(r'ScienceDirect', 'ScienceDirect :', rec['956']['3'])
-            rec = utilities.DeleteLocGov(rec)
-            rec = utilities.Standardize856_956(rec, 'Readex')
-            rec = utilities.CharRefTrans(rec)
-        rec = utilities.SaveToMRK(recs, filename)
-        x = utilities.MakeMARCFile(recs, filename)
+            rec = self.utilities.DeleteLocGov(rec)
+            rec = self.utilities.Standardize856_956(rec, 'Readex')
+            rec = self.utilities.CharRefTrans(rec)
+        rec = self.utilities.SaveToMRK(recs, filename)
+        x = self.utilities.MakeMARCFile(recs, filename)
         return x

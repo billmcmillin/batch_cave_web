@@ -9,6 +9,7 @@ import datetime
 import pymarc
 from pymarc import MARCReader
 from converter.modelsdir import batchEdits
+from converter.modelsdir.utilities import utilityFunctions
 
 TYPE_CHOICES = [
     (0, 'None'),
@@ -67,7 +68,7 @@ class Conversion(ValidateOnSaveMixin, models.Model):
         #conv_file = converttype(self.Upload)
         BatchEdits = batchEdits.batchEdits()
         method_to_call = self.ConvName
-        conv_file = BatchEdits.method_to_call(self.Upload)
+        conv_file = BatchEdits.ER_EAI_2nd(self.Upload)
         #conv_file = self.Upload
         django_file = File(conv_file)
         self.Output.save("Conversion_Results.mrc", django_file, save=False)
