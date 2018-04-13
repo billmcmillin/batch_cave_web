@@ -3,6 +3,7 @@ from converter.modelsdir.utilities import utilityFunctions
 
 class batchEdits:
 
+
     def __init__(self):
         self.utilities = utilityFunctions()
 
@@ -29,6 +30,7 @@ class batchEdits:
 
 
     def ER_EAI_1st(self, x, name='ER-EAI-1st'):
+        filename = 'output.mrc'
         print('\nRunning change script '+ name + '\n')
         #iterate over list of Record objects
         recs = self.utilities.BreakMARCFile(x)
@@ -46,8 +48,10 @@ class batchEdits:
             rec = self.utilities.DeleteLocGov(rec)
             rec = self.utilities.Standardize856_956(rec, 'Readex')
             rec = self.utilities.CharRefTrans(rec)
-        rec = self.utilities.SaveToMRK(recs, filename)
-        x = self.utilities.MakeMARCFile(recs, filename)
+        #rec = self.utilities.SaveToMRK(recs, filename)
+        rec = self.utilities.CreateMRK(recs)
+        #x = self.utilities.MakeMARCFile(recs, filename)
+        x = self.utilities.CreateMRC(recs)
         return x
 
 ########### TODO: add ER_OECD ################

@@ -1,5 +1,6 @@
 import inspect, re, subprocess
 from pymarc import Record, Field, MARCReader, MARCWriter, marcxml
+from io import BytesIO
 
 class utilityFunctions:
 
@@ -500,6 +501,10 @@ class utilityFunctions:
         outfile.close()
         return recs
 
+    def CreateMRK(self, recs):
+        out_file = recs
+        return out_file
+
     def MakeMARCFile(self, recs, filename):
         filenameNoExt = re.sub('.\w*$', '', filename)
         mrcFileName = filenameNoExt + '_OUT.mrc'
@@ -513,3 +518,11 @@ class utilityFunctions:
         writer.close()
         return recs
 
+    def CreateMRC(self, recs):
+        ### writing to memory (Python 3 only)
+        memory = BytesIO()
+        writer = MARCWriter(memory)
+        for record in recs:
+            writer.write(record)
+        writer.close(close_fh=False)
+        return memory

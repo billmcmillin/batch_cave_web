@@ -24,7 +24,6 @@ class ValidateOnSaveMixin(object):
     def save(self, force_insert=False, force_update=False, **kwargs):
         if not (force_insert or force_update):
             self.TimeExecuted = datetime.datetime.now(datetime.timezone.utc)
-            self.ConvName = TYPE_CHOICES[self.Type][1]
             self.full_clean()
         super(ValidateOnSaveMixin, self).save(force_insert, force_update,
 **kwargs)
@@ -67,8 +66,9 @@ class Conversion(ValidateOnSaveMixin, models.Model):
         #convertype = self.Type
         #conv_file = converttype(self.Upload)
         BatchEdits = batchEdits.batchEdits()
-        method_to_call = self.ConvName
-        conv_file = BatchEdits.ER_EAI_2nd(self.Upload)
+        self.ConvName = TYPE_CHOICES[self.Type][1]
+        method_to_call = getattr(BatchEdits, self.ConvName)
+        conv_file = method_to_call('data/infiles/' + self.Upload.name)
         #conv_file = self.Upload
         django_file = File(conv_file)
         self.Output.save("Conversion_Results.mrc", django_file, save=False)
