@@ -88,15 +88,16 @@ class batchEdits:
             # 530 field, change Hardcopy to Print
             rec['530']['a'] = 'Print version available to institutional subscribers.'
             # 490 and 830 fields lack ISBD punctuation, supply where lacking
+            #x = re.sub('(?m)^(=490.*)[^ ;](\$v.*)', '\\1 ;\\2', x)
             four90a = rec['490']['a'] + ' ;'
             rec['490']['a'] = four90a
             eight30a = rec['830']['a'] + ' ;'
             rec['830']['a'] = eight30a
             # delete supplied 690 fields
             rec.remove_field(rec.get_fields('690')[0])
-            rec = utilities.DeleteLocGov(rec)
-            rec = utilities.Standardize856_956(rec, 'NBER')
-            rec = utilities.CharRefTrans(rec)
-            rec = utilities.AddEresourceGMD(rec)
+            rec = self.utilities.DeleteLocGov(rec)
+            rec = self.utilities.Standardize856_956(rec, 'NBER')
+            rec = self.utilities.CharRefTrans(rec)
+            rec = self.utilities.AddEresourceGMD(rec)
         x = self.utilities.CreateMRC(recs)
         return x
