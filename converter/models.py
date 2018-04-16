@@ -83,3 +83,6 @@ class Conversion(ValidateOnSaveMixin, models.Model):
         #save output MRK
         django_output_mrk = BatchEdits.utilities.CreateMRK('data/' + self.Output.name)
         self.MrkOut.save("Conversion_Results.mrk", django_output_mrk, save=False)
+
+    class Meta:
+        ordering = ['-TimeExecuted']

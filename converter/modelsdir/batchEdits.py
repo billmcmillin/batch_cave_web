@@ -24,7 +24,6 @@ class batchEdits:
             rec = self.utilities.DeleteLocGov(rec)
             rec = self.utilities.Standardize856_956(rec)
             rec = self.utilities.CharRefTrans(rec)
-        rec = self.utilities.CreateRecList(recs)
         x = self.utilities.CreateMRC(recs)
         return x
 
@@ -48,9 +47,6 @@ class batchEdits:
             rec = self.utilities.DeleteLocGov(rec)
             rec = self.utilities.Standardize856_956(rec, 'Readex')
             rec = self.utilities.CharRefTrans(rec)
-        #rec = self.utilities.SaveToMRK(recs, filename)
-        rec = self.utilities.CreateRecList(recs)
-        #x = self.utilities.MakeMARCFile(recs, filename)
         x = self.utilities.CreateMRC(recs)
         return x
 
