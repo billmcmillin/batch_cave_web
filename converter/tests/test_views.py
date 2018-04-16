@@ -24,8 +24,6 @@ class ConversionViewsTest(TestCase):
         self.assertEqual(response.status_code, 302)
         self.assertEqual(response['location'], '/conversions/index')
 
-###################################SKIP###############
-    @skip
     def test_uses_conv_index_template(self):
         response = self.client.get('/conversions/index')
         self.assertTemplateUsed(response, 'index.html')
@@ -34,17 +32,6 @@ class ConversionViewsTest(TestCase):
         response = self.client.get('/conversions/index')
         self.assertTemplateUsed(response, 'index.html')
         self.assertEqual(Conversion.objects.count(), 0)
-
-###################################SKIP###############
-    @skip
-    def test_displays_all_conversions(self):
-        Conversion.objects.create(Name='First one')
-        Conversion.objects.create(Name='Second one')
-
-        response = self.client.get('/conversions/index')
-
-        self.assertContains(response, 'First one')
-        self.assertContains(response, 'Second one')
 
 
     def test_create_uses_form(self):

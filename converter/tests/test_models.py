@@ -7,27 +7,61 @@ from unittest import skip
 class ConversionModelTest(TestCase):
 
     def get_test_file(self):
-        with open('data/infiles/TEST.mrc', 'rb') as testMarc:
+        with open('/data/infiles/TEST.mrc', 'rb') as testMarc:
             test_file = SimpleUploadedFile('TEST.mrc', testMarc.read())
-        return test_file
-
-    def get_bad_file(self):
-        with open('data/infiles/shell.mrc', 'rb') as testMarc:
-            test_file = SimpleUploadedFile('testing_bad_upload.mrc', testMarc.read())
         return test_file
 
     def open_file(self, file_name):
         test_file = file_name.read()
         return test_file
 
-    def test_get_error_from_invalid_model(self):
-        with self.assertRaises(ValueError):
-            Conversion(Name='Test1', Type=0, Upload=None).save()
+###################################SKIP###############
+    @skip
+    def test_saving_and_retrieving_conversions(self):
+        first_conversion = Conversion()
+        first_conversion.Name = 'The first ever conversion'
+        first_conversion.save()
 
-    def test_cannot_save_incomplete_conversion(self):
+        second_conversion = Conversion()
+        second_conversion.Name = 'Conversion the second'
+        second_conversion.save()
+
+        saved_items = Conversion.objects.all()
+        self.assertEqual(saved_items.count(), 2)
+
+        first_saved_item = saved_items[0]
+        second_saved_item = saved_items[1]
+        self.assertEqual(first_saved_item.Name, 'The first ever conversion')
+        self.assertEqual(second_saved_item.Name, 'Conversion the second')
+
+###################################SKIP###############
+    @skip
+    def test_cannot_save_empty_conversion(self):
         conv = Conversion.objects.create()
-        with self.assertRaises(ValueError):
+        with self.assertRaises(ValidationError):
             conv.save()
+            conv.full_clean()
+
+###################################SKIP###############
+    @skip
+    def test_unnamed_conversions_not_saved(self):
+        test_file = self.get_test_file()
+        response =self.client.post('/conversions/create/', data={'Name': '', 'Type': 1, 'Upload': test_file})
+        self.assertEqual(Conversion.objects.count(), 0)
+
+###################################SKIP###############
+    @skip
+    def test_blank_type_conversions_not_saved(self):
+        test_file = self.get_test_file()
+        response =self.client.post('/conversions/create/', data={'Name': 'test conversion', 'Type': '', 'Upload': test_file})
+        self.assertEqual(Conversion.objects.count(), 0)
+
+
+###################################SKIP###############
+    @skip
+    def test_blank_file_conversion_not_saved(self):
+        response =self.client.post('/conversions/create/', data={'Name': 'test conversion', 'Type': 1, 'Upload': '' })
+        self.assertEqual(Conversion.objects.count(), 0)
 
     def test_uploaded_file_saved_is_same_size_in_db(self):
         test_file = self.get_test_file()
@@ -42,3 +76,10 @@ class ConversionModelTest(TestCase):
         saved_items = Conversion.objects.all()
         saved_conversion_name = saved_items[0].ConvName
         self.assertEqual('ER_EAI_2nd', saved_conversion_name)
+
+    def test_mrk_files_are_created(self):
+        test_file = self.get_test_file()
+        response = self.client.post('/conversions/create/', data={'Name': 'test conversion', 'Type': '2', 'Upload': test_file})
+        saved_items = Conversion.objects.all()
+        mrk_in = Conversion.object[0].MrkIn
+        mrk_out = Conversion.object[0].MrkOut

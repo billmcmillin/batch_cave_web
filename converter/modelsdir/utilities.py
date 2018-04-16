@@ -57,7 +57,7 @@ class utilityFunctions:
     def BreakMARCFileBACKUP(self, x):
         #break the file; output .mrk
         #mrkFileName = re.sub('.mrc', '.mrk', x)
-        print("\n<Breaking MARC file>\n")
+        #print("\n<Breaking MARC file>\n")
         #marcedit process
         #subprocess.call([MonoBin,MarcEditBin,"-s", x, "-d", mrkFileName,"-break"])
         with open(x, 'rb') as fh:
@@ -73,7 +73,7 @@ class utilityFunctions:
     def BreakMARCFile(self, x):
         #break the file into a list of Record objects;
         #mrkFileName = re.sub('.mrc', '.mrk', x)
-        print("\n<Breaking MARC file>\n")
+        #print("\n<Breaking MARC file>\n")
         records = []
         with open(x, 'rb') as fh:
             reader = MARCReader(fh)

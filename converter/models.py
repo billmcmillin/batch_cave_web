@@ -37,8 +37,10 @@ class Conversion(ValidateOnSaveMixin, models.Model):
     #NOTE - ensure this is outside the server doc root
     upload_storage = FileSystemStorage(location=settings.MEDIA_ROOT,base_url='/data')
     Upload = models.FileField(upload_to='infiles/', storage=upload_storage,default=None)
+    MrkIn = models.FileField(upload_to='infiles/', storage=upload_storage,default=None)
     download_storage = FileSystemStorage(location=settings.MEDIA_ROOT,base_url='/data')
     Output = models.FileField(upload_to='outfiles/', storage=download_storage,default=None)
+    MrkOut = models.FileField(upload_to='outfiles/', storage=download_storage,default=None)
     RecordsIn = models.PositiveIntegerField(default=0)
     RecordsOut = models.PositiveIntegerField(default=0)
 
@@ -63,12 +65,9 @@ class Conversion(ValidateOnSaveMixin, models.Model):
         return 0
 
     def make_conversion(self):
-        #convertype = self.Type
-        #conv_file = converttype(self.Upload)
         BatchEdits = batchEdits.batchEdits()
         self.ConvName = TYPE_CHOICES[self.Type][1]
         method_to_call = getattr(BatchEdits, self.ConvName)
         conv_file = method_to_call('data/infiles/' + self.Upload.name)
-        #conv_file = self.Upload
         django_file = File(conv_file)
         self.Output.save("Conversion_Results.mrc", django_file, save=False)

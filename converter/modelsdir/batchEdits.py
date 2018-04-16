@@ -8,7 +8,7 @@ class batchEdits:
         self.utilities = utilityFunctions()
 
     def ER_EAI_2nd(self, x, name='ER-EAI-2ND'):
-        print('\nRunning change script '+ name + '\n')
+        #print('\nRunning change script '+ name + '\n')
         recs = self.utilities.BreakMARCFile(x)
         for rec in recs:
             # Change =001 field to =002, and add 003
@@ -24,14 +24,14 @@ class batchEdits:
             rec = self.utilities.DeleteLocGov(rec)
             rec = self.utilities.Standardize856_956(rec)
             rec = self.utilities.CharRefTrans(rec)
-        rec = self.utilities.SaveToMRK(recs, filename)
-        x = self.utilities.MakeMARCFile(recs, filename)
+        rec = self.utilities.CreateMRK(recs)
+        x = self.utilities.CreateMRC(recs)
         return x
 
 
     def ER_EAI_1st(self, x, name='ER-EAI-1st'):
         filename = 'output.mrc'
-        print('\nRunning change script '+ name + '\n')
+        #print('\nRunning change script '+ name + '\n')
         #iterate over list of Record objects
         recs = self.utilities.BreakMARCFile(x)
         for rec in recs:
@@ -58,7 +58,7 @@ class batchEdits:
 
 
     def ER_OCLC_WCS_SDebk(self, x, name='ER-OCLC-WCS-SDebk'):
-        print('\nRunning change script '+ name + '\n')
+        #print('\nRunning change script '+ name + '\n')
         recs = self.utilities.BreakMARCFile(x)
         for rec in recs:
             rec.add_ordered_field(Field(tag = '949', indicators = ['\\', '1'], subfields = ['l','uint', 'r', 's', 't', '99']))
@@ -75,6 +75,6 @@ class batchEdits:
             rec = self.utilities.DeleteLocGov(rec)
             rec = self.utilities.Standardize856_956(rec, 'Readex')
             rec = self.utilities.CharRefTrans(rec)
-        rec = self.utilities.SaveToMRK(recs, filename)
-        x = self.utilities.MakeMARCFile(recs, filename)
+        rec = self.utilities.CreateMRK(recs)
+        x = self.utilities.CreateMRC(recs)
         return x
