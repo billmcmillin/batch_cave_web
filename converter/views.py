@@ -40,3 +40,17 @@ def download_original(request, conversion_id):
     response['content_type'] = 'application/octet-stream'
     response['Content-Disposition'] = 'attachment;filename=%s' % convo.Name
     return response
+
+def download_original_mrk(request, conversion_id):
+    convo = Conversion.objects.get(pk=conversion_id)
+    response = HttpResponse(convo.MrkIn)
+    response['content_type'] = 'application/octet-stream'
+    response['Content-Disposition'] = 'attachment;filename=%s' % convo.Name
+    return response
+
+def download_result_mrk(request, conversion_id):
+    convo = Conversion.objects.get(pk=conversion_id)
+    response = HttpResponse(convo.MrkOut)
+    response['content_type'] = 'application/octet-stream'
+    response['Content-Disposition'] = 'attachment;filename=%s' % convo.Name
+    return response

@@ -25,4 +25,6 @@ urlpatterns = [
     url(r'^conversions/create/$', views.create, name='create'),
 url(r'^download/(?P<conversion_id>[0-9]+)/$', views.download, name='download'),
     url(r'^download_original/(?P<conversion_id>[0-9]+)/$', views.download_original, name='download_original'),
+    url(r'^download_original_mrk/(?P<conversion_id>[0-9]+)/$',views.download_original_mrk, name='download_original_mrk'),
+    url(r'^download_result_mrk/(?P<conversion_id>[0-9]+)/$', views.download_result_mrk, name='download_result_mrk'),
 ]

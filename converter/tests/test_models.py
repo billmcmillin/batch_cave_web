@@ -81,5 +81,5 @@ class ConversionModelTest(TestCase):
         test_file = self.get_test_file()
         response = self.client.post('/conversions/create/', data={'Name': 'test conversion', 'Type': '2', 'Upload': test_file})
         saved_items = Conversion.objects.all()
-        mrk_in = Conversion.object[0].MrkIn
-        mrk_out = Conversion.object[0].MrkOut
+        mrk_in = saved_items[0].MrkIn
+        mrk_out = saved_items[0].MrkOut

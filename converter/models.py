@@ -65,9 +65,21 @@ class Conversion(ValidateOnSaveMixin, models.Model):
         return 0
 
     def make_conversion(self):
+        #create a new batchEdits object
         BatchEdits = batchEdits.batchEdits()
+        #get the name of the method
         self.ConvName = TYPE_CHOICES[self.Type][1]
+        #get the callable method from the batchEdits object
         method_to_call = getattr(BatchEdits, self.ConvName)
+        #pass the input file to the method and get back BytesIO
         conv_file = method_to_call('data/infiles/' + self.Upload.name)
-        django_file = File(conv_file)
-        self.Output.save("Conversion_Results.mrc", django_file, save=False)
+        #turn the BytesIO into a file Django can save
+        django_output_mrc_file = File(conv_file)
+        self.Output.save("Conversion_Results.mrc", django_output_mrc_file, save=False)
+        #save input MRK
+        input_mrk = BatchEdits.utilities.CreateMRK('data/infiles/' + self.Upload.name)
+        django_input_mrk_file = File(input_mrk)
+        self.MrkIn.save("Conversion_Input.mrk", django_input_mrk_file, save=False)
+        #save output MRK
+        django_output_mrk = BatchEdits.utilities.CreateMRK('data/' + self.Output.name)
+        self.MrkOut.save("Conversion_Results.mrk", django_output_mrk, save=False)

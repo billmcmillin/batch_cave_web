@@ -1,6 +1,6 @@
 import inspect, re, subprocess
-from pymarc import Record, Field, MARCReader, MARCWriter, marcxml
-from io import BytesIO
+from pymarc import Record, Field, MARCReader, MARCWriter, marcxml, TextWriter
+from io import BytesIO, StringIO
 
 class utilityFunctions:
 
@@ -501,7 +501,7 @@ class utilityFunctions:
         outfile.close()
         return recs
 
-    def CreateMRK(self, recs):
+    def CreateRecList(self, recs):
         out_file = recs
         return out_file
 
@@ -517,6 +517,16 @@ class utilityFunctions:
                 print(str(e) + ' error. Encoding: ' + str(r))
         writer.close()
         return recs
+
+    def CreateMRK(self, filename):
+        ### writing to memory (Python 3 only)
+        recs = self.BreakMARCFile(filename)
+        outString = StringIO()
+        writer = TextWriter(outString)
+        for record in recs:
+            writer.write(record)
+        writer.close(close_fh=False)
+        return outString
 
     def CreateMRC(self, recs):
         ### writing to memory (Python 3 only)

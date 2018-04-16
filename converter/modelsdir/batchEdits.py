@@ -24,7 +24,7 @@ class batchEdits:
             rec = self.utilities.DeleteLocGov(rec)
             rec = self.utilities.Standardize856_956(rec)
             rec = self.utilities.CharRefTrans(rec)
-        rec = self.utilities.CreateMRK(recs)
+        rec = self.utilities.CreateRecList(recs)
         x = self.utilities.CreateMRC(recs)
         return x
 
@@ -43,13 +43,13 @@ class batchEdits:
             rec.add_ordered_field(Field(tag = '949', indicators = ['\\', '\\'], subfields = ['a','*b3=z;bn=buint;']))
             rec.add_ordered_field(Field(tag = '949', indicators = ['\\', '1'], subfields = ['l','uint', 'r', 's', 't', '99']))
             rec.add_ordered_field(Field(tag = '730', indicators = ['0', '\\'],subfields = ['a','Early American imprints (Online).', 'n', 'First series,','p','Evans.', '5', 'OCU']))
-            rec.add_ordered_field(Field(tag = '506', indicators = ['\\', ''], subfields = ['a','Access restricted to users at subscribing institutions']))
+            rec.add_ordered_field(Field(tag = '506', indicators = ['\\', '\\'], subfields = ['a','Access restricted to users at subscribing institutions']))
             rec.remove_field(rec.get_fields('008')[0])
             rec = self.utilities.DeleteLocGov(rec)
             rec = self.utilities.Standardize856_956(rec, 'Readex')
             rec = self.utilities.CharRefTrans(rec)
         #rec = self.utilities.SaveToMRK(recs, filename)
-        rec = self.utilities.CreateMRK(recs)
+        rec = self.utilities.CreateRecList(recs)
         #x = self.utilities.MakeMARCFile(recs, filename)
         x = self.utilities.CreateMRC(recs)
         return x
@@ -75,6 +75,6 @@ class batchEdits:
             rec = self.utilities.DeleteLocGov(rec)
             rec = self.utilities.Standardize856_956(rec, 'Readex')
             rec = self.utilities.CharRefTrans(rec)
-        rec = self.utilities.CreateMRK(recs)
+        rec = self.utilities.CreateRecList(recs)
         x = self.utilities.CreateMRC(recs)
         return x
