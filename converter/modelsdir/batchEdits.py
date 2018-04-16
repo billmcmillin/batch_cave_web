@@ -15,7 +15,7 @@ class batchEdits:
             rec.remove_field(rec.get_fields('001')[0])
             rec.remove_field(rec.get_fields('003')[0])
             rec.add_ordered_field(Field(tag = '003',data = 'ER-EAI-2nd'))
-            # ADD local 730, 949 before supplied 008
+            # ADD local 730, 949 
             rec.add_ordered_field(Field(tag = '949', indicators = ['\\', '\\'], subfields = ['a','*b3=z;bn=buint;']))
             rec.add_ordered_field(Field(tag = '949', indicators = ['\\', '1'], subfields = ['l','uint', 'r', 's', 't', '99']))
             rec.add_ordered_field(Field(tag = '730', indicators = ['0', '\\'], subfields = ['a','Early American imprints (Online).', 'n', 'Second series,', 'p','Shaw-Shoemaker.', '5', 'OCU']))
@@ -88,7 +88,6 @@ class batchEdits:
             # 530 field, change Hardcopy to Print
             rec['530']['a'] = 'Print version available to institutional subscribers.'
             # 490 and 830 fields lack ISBD punctuation, supply where lacking
-            #x = re.sub('(?m)^(=490.*)[^ ;](\$v.*)', '\\1 ;\\2', x)
             four90a = rec['490']['a'] + ' ;'
             rec['490']['a'] = four90a
             eight30a = rec['830']['a'] + ' ;'
