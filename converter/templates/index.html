@@ -18,4 +18,27 @@
             </tr>
         {% endfor %}
         </table>
+
+        {% if Conversions.has_other_pages %}
+            <ul class="pagination">
+                {% if Conversions.has_previous %}
+                    <li><a href="?page={{ Conversions.previous_page_number }}">&laquo;</a></li>
+                {% else %}
+                    <li class="disabled"><span>&laquo;</span></li>
+                {% endif %}
+                {% for i in Conversions.paginator.page_range %}
+                    {% if Conversions.number == i %}
+                        <li class="active"><span>{{ i }} <span class="sr-only">(current)</span>
+                {% else %}
+                    <li><a href="?page={{ i }}">{{ i }}</a></li>
+                {% endif %}
+                {% endfor %}
+                {% if Conversions.has_next %}
+                    <li><a href="?page={{ Conversions.next_page_number }}">&raquo;</a></li>
+                {% else %}
+                    <li class="disabled"><span>&raquo;</span></li>
+                {% endif %}
+            </ul>
+        {% endif %}
+
 {% endblock %}

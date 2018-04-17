@@ -3,13 +3,23 @@ from converter.models import Conversion
 from converter.forms import ConversionForm
 from django.core.exceptions import ValidationError
 from django.http import HttpResponse
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 def home_page(request):
     return render(request, 'home.html')
 
 def index(request):
     convs = Conversion.objects.all()
-    return render(request, 'index.html', {'Conversions': convs})
+    page_num = request.GET.get('page', 1)
+    paginator = Paginator(convs, 10)
+    try:
+        conversions_out = paginator.page(page_num)
+    except PageNotAnInteger:
+        conversions_out = paginator.page(1)
+    except EmptyPage:
+        conversions_out = paginator.page(paginator.num_pages)
+
+    return render(request, 'index.html', {'Conversions': conversions_out})
 
 def create(request):
     if request.method == 'POST':
