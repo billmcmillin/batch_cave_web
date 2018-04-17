@@ -1,5 +1,6 @@
 from pymarc import MARCReader, Record, Field
 from converter.modelsdir.utilities import utilityFunctions
+import re
 
 class batchEdits:
 
@@ -99,5 +100,49 @@ class batchEdits:
             rec = self.utilities.Standardize856_956(rec, 'NBER')
             rec = self.utilities.CharRefTrans(rec)
             rec = self.utilities.AddEresourceGMD(rec)
+        x = self.utilities.CreateMRC(recs)
+        return x
+
+
+    def ER_OL_Safari(self, x, name='ER-O/L-Safari'):
+        recs = self.utilities.BreakMARCFile(x)
+        regexes = [
+            re.compile(r'.*EBSCOhost.*\n'),
+            re.compile(r'.*OhioLINK.*'),
+            re.compile(r'.*SpringerLink.*\n'),
+            re.compile(r'.*Wiley.*\n'),
+        ]
+
+        for rec in recs:
+            for field in rec:
+                if field.tag == '856':
+                    #if any of the 856 fields match any of the above regex patterns, delete the whole field`
+                    if any(regex.match(field.value()) for regex in regexes):
+                        rec.remove_field(field)
+                    #rename any 856$3 from Safari Books Online to Safari (ProQuest) :
+                    if field['3'] == 'Safari Books Online':
+                        field['3'] = 'Safari (ProQuest) :'
+                    #edit proxy URLs
+                    old_z = field['z']
+                    old_z = re.sub('Connect to resource', 'Connect to resource online', old_z)
+                    #old_z = re.sub('\(off-campus access\)', '(Off Campus Access)', old_z)
+                    old_z = re.sub('\(off-campus\)', '(Off Campus Access)', old_z)
+                    #old_z = re.sub('Connect to this resource online', 'Connect to resource online', old_z)
+                    #old_z = re.sub('\(off-campus access\)', '(Off Campus Access)', old_z)
+                    #old_z = re.sub('Connect to electronic resource', '$Connect to resource online', old_z)
+                    field['z'] = old_z
+                    #Change hyperlink tag from 856 to 956
+                    #field.tag = '956'
+            #Insert 002, 003, 730, 949 before supplied 008
+            rec.add_ordered_field(Field(tag = '949', indicators = ['\\', '1'],subfields = ['l','olink', 'r', 's', 't', '99']))
+            rec.add_ordered_field(Field(tag = '949', indicators = ['\\', '\\'],subfields = ['a','*b3=z;bn=bolin;']))
+            rec.add_ordered_field(Field(tag = '730', indicators =['0','\\'],subfields = ['a','Safari books online.', '5', 'OCU']))
+            #rec.remove_field(rec.get_fields('003')[0])
+            rec.add_ordered_field(Field(tag = '003',data = 'ER-O/L-Safari'))
+            rec.add_ordered_field(Field(tag = '002',data = 'O/L-Safari'))
+            #rec = self.utilities.Standardize856_956(rec, )
+            rec = self.utilities.AddEresourceGMD(rec)
+            rec = self.utilities.DeleteLocGov(rec)
+            rec = self.utilities.CharRefTrans(rec)
         x = self.utilities.CreateMRC(recs)
         return x

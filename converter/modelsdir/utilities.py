@@ -455,6 +455,7 @@ class utilityFunctions:
         for key in range(len(keys)):
             for x in rec:
                 x = re.sub(CharRefTransTable[keys[key]][0],CharRefTransTable[keys[key]][1], x.value())
+                print(x)
             #Flag unknown Char Refs
             UnrecognizedCharRef = list(set(re.findall('&[\d|\w|#]*;', x)))
             if UnrecognizedCharRef:
