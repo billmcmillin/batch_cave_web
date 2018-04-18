@@ -54,21 +54,6 @@ class utilityFunctions:
 
         return marcStr
 
-    def BreakMARCFileBACKUP(self, x):
-        #break the file; output .mrk
-        #mrkFileName = re.sub('.mrc', '.mrk', x)
-        #print("\n<Breaking MARC file>\n")
-        #marcedit process
-        #subprocess.call([MonoBin,MarcEditBin,"-s", x, "-d", mrkFileName,"-break"])
-        with open(x, 'rb') as fh:
-            reader = MARCReader(fh)
-            x = ''
-            for rec in reader:
-                x += str(rec) + '\n'
-        #marcedit process
-        #x = open(mrkFileName).read()
-        return x
-
 
     def BreakMARCFile(self, x):
         #break the file into a list of Record objects;
@@ -76,7 +61,7 @@ class utilityFunctions:
         #print("\n<Breaking MARC file>\n")
         records = []
         with open(x, 'rb') as fh:
-            reader = MARCReader(fh)
+            reader = MARCReader(fh, to_unicode=True)
             for rec in reader:
                 records.append(rec)
         return records
@@ -142,10 +127,7 @@ class utilityFunctions:
         if rec['856'] is not None:
             field856 = rec['856'].value()
             print(field856)
-        if rec['956'] is not None:
-            field956 = rec['956'].value()
-            print(field956)
-        URLFieldInd1 = re.findall('=[8|9]56  [^4]..*', args[0])
+        ifFieldInd1 = re.findall('=[8|9]56  [^4]..*', args[0])
         #if found, interrupt script with alert
         if URLFieldInd1:
             print('\a\a\nFound URL fields(s) with unexpected indicator:\n')
@@ -455,7 +437,6 @@ class utilityFunctions:
         for key in range(len(keys)):
             for x in rec:
                 x = re.sub(CharRefTransTable[keys[key]][0],CharRefTransTable[keys[key]][1], x.value())
-                print(x)
             #Flag unknown Char Refs
             UnrecognizedCharRef = list(set(re.findall('&[\d|\w|#]*;', x)))
             if UnrecognizedCharRef:
@@ -511,11 +492,13 @@ class utilityFunctions:
         mrcFileName = filenameNoExt + '_OUT.mrc'
         print('\n<Compiling file to MARC>\n')
         writer = MARCWriter(open(mrcFileName, "wb"))
-        for r in recs:
+        for record in rex:
             try:
-                writer.write(r.as_marc())
-            except Exception as e:
-                print(str(e) + ' error. Encoding: ' + str(r))
+                writer.write(record)
+            except:
+                record.force_utf8 = True
+                print(record)
+                writer.write(record)
         writer.close()
         return recs
 
@@ -534,6 +517,11 @@ class utilityFunctions:
         memory = BytesIO()
         writer = MARCWriter(memory)
         for record in recs:
-            writer.write(record)
+            try:
+                writer.write(record)
+            except:
+                record.force_utf8 = True
+                print(record)
+                writer.write(record)
         writer.close(close_fh=False)
         return memory
