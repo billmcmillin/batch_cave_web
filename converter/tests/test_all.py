@@ -1,9 +1,8 @@
 from django.urls import resolve
 from django.test import TestCase
 from django.http import HttpRequest
-from django.core.files.uploadedfile import SimpleUploadedFile
 from converter.models import Conversion
-
+from django.core.exceptions import ValidationError
 from converter.views import home_page
 
 

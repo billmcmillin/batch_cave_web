@@ -23,7 +23,6 @@ class batchEdits:
             rec.remove_field(rec.get_fields('008')[0])
             rec = self.utilities.DeleteLocGov(rec)
             rec = self.utilities.Standardize856_956(rec)
-            rec = self.utilities.CharRefTrans(rec)
         x = self.utilities.CreateMRC(recs)
         return x
 
@@ -44,7 +43,6 @@ class batchEdits:
             rec.remove_field(rec.get_fields('008')[0])
             rec = self.utilities.DeleteLocGov(rec)
             rec = self.utilities.Standardize856_956(rec, 'Readex')
-            rec = self.utilities.CharRefTrans(rec)
         x = self.utilities.CreateMRC(recs)
         return x
 
@@ -66,7 +64,6 @@ class batchEdits:
             rec['956']['3'] = re.sub(r'ScienceDirect', 'ScienceDirect :', rec['956']['3'])
             rec = self.utilities.DeleteLocGov(rec)
             rec = self.utilities.Standardize856_956(rec, 'Readex')
-            rec = self.utilities.CharRefTrans(rec)
         x = self.utilities.CreateMRC(recs)
         return x
 
@@ -98,7 +95,6 @@ class batchEdits:
             rec.remove_field(rec.get_fields('690')[0])
             rec = self.utilities.DeleteLocGov(rec)
             rec = self.utilities.Standardize856_956(rec, 'NBER')
-            rec = self.utilities.CharRefTrans(rec)
             rec = self.utilities.AddEresourceGMD(rec)
         x = self.utilities.CreateMRC(recs)
         return x
@@ -143,6 +139,21 @@ class batchEdits:
             #rec = self.utilities.Standardize856_956(rec, )
             rec = self.utilities.AddEresourceGMD(rec)
             rec = self.utilities.DeleteLocGov(rec)
-            rec = self.utilities.CharRefTrans(rec)
+        x = self.utilities.CreateMRC(recs)
+        return x
+
+    def ER_OL_Sage_eRef(self, x, name='ER-O/L-Sage-eRef'):
+        recs = self.utilities.BreakMARCFile(x)
+        for rec in recs:
+            #Insert 002, 003, 730, 949 before supplied 003
+            rec.add_ordered_field(Field(tag = '002',data = 'O/L-Sage-eRef'))
+            rec.add_ordered_field(Field(tag = '949', indicators = ['\\', '1'],subfields = ['l','olink', 'r', 's', 't', '99']))
+            rec.add_ordered_field(Field(tag = '949', indicators = ['\\', '\\'],subfields = ['a','*bn=bolin;']))
+            rec.add_ordered_field(Field(tag = '730', indicators = ['0','\\'],subfields = ['a','Sage eReference..', '5', 'OCU']))
+            rec.add_ordered_field(Field(tag = '003',data = 'ER-O/L-Sage-eRef'))
+            rec.add_ordered_field(Field(tag = '002',data = 'O/L-Sage-eRef'))
+            rec = self.utilities.AddEresourceGMD(rec)
+            rec = self.utilities.DeleteLocGov(rec)
+            rec = self.utilities.Standardize856_956(rec, 'SAGE Reference Online')
         x = self.utilities.CreateMRC(recs)
         return x

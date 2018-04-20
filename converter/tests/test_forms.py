@@ -11,45 +11,41 @@ class ConversionFormTest(TestCase):
             test_file = SimpleUploadedFile('TEST.mrc', testMarc.read())
         return test_file
 
+    def get_file_handle(self):
+        with open('/data/infiles/TEST.mrc', 'rb') as testMarc:
+            return testMarc
+
     def test_form_name_input_has_placeholder_and_css(self):
         form = ConversionForm()
+        test_file = self.get_test_file()
+        self.assertIn('class="form-control input-lg"', form.as_p())
         self.assertIn('class="form-control input-lg"', form.as_p())
 
-###################################SKIP###############
-    @skip
     def test_form_saves_when_complete(self):
         test_file = self.get_test_file()
-        form = ConversionForm(data={'Name': 'First one', 'Type': 1, 'Upload': test_file })
-        self.assertTrue(form.is_valid())
+        response =self.client.post('/conversions/create/', data={'Name': 'test conversion', 'Type': '2', 'Upload': test_file})
+        self.assertEqual(response['location'], '/conversions/index')
+
+    def test_form_validation_for_blank_names(self):
+        test_file = self.get_test_file()
+        response =self.client.post('/conversions/create/', data={'Name': '', 'Type': '2', 'Upload': test_file})
+        expected_error = UNNAMED_CONVERSION_ERROR
+        self.assertContains(response, expected_error)
 
 ###################################SKIP###############
     @skip
     def test_form_validation_for_blank_names(self):
+        #with self.assertRaises(Exception):
         test_file = self.get_test_file()
-        form = ConversionForm(data={'Name': '', 'Type': 1, 'Upload': test_file})
-        self.assertFalse(form.is_valid())
-        self.assertIn(
-            UNNAMED_CONVERSION_ERROR,
-            form.errors.as_text(),
-        )
-
-###################################SKIP###############
-    @skip
-    def test_form_validation_for_blank_type(self):
-        test_file = self.get_test_file()
-        form = ConversionForm(data={'Name': 'Huhwhat', 'Type': '', 'Upload': test_file})
-        self.assertFalse(form.is_valid())
-        self.assertIn(
-            UNTYPED_CONVERSION_ERROR,
-            form.errors.as_text(),
-        )
+        response =self.client.post('/conversions/create/', data={'Name': 'A name', 'Type': '', 'Upload': test_file})
+        expected_error = UNTYPED_CONVERSION_ERROR
+        print('ran it!')
+        self.assertContains(response, expected_error)
 
 ###################################SKIP###############
     @skip
     def test_form_validation_for_blank_file(self):
-        form = ConversionForm(data={'Name': 'Huhwhat', 'Type': 1, 'Upload': '' })
-        self.assertFalse(form.is_valid())
-        self.assertIn(
-            NOFILE_CONVERSION_ERROR,
-            form.errors.as_text(),
-        )
+        test_file = self.get_test_file()
+        response =self.client.post('/conversions/create/',data={'Name':'Huhwaht', 'Type': '2', 'Upload': ''})
+        expected_error = UNNAMED_CONVERSION_ERROR
+        self.assertContains(response, expected_error)

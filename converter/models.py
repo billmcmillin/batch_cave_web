@@ -24,7 +24,7 @@ class ValidateOnSaveMixin(object):
     def save(self, force_insert=False, force_update=False, **kwargs):
         if not (force_insert or force_update):
             self.TimeExecuted = datetime.datetime.now(datetime.timezone.utc)
-            self.full_clean()
+            #self.full_clean()
         super(ValidateOnSaveMixin, self).save(force_insert, force_update,
 **kwargs)
 
@@ -49,12 +49,12 @@ class Conversion(ValidateOnSaveMixin, models.Model):
             raise ValidationError('Each conversion must have a name.')
         if self.Upload is None:
             raise ValidationError('Each conversion must have a file uploaded.')
-        if self.check_file() != 0:
+        if self.check_file_make_conversion() != 0:
             raise ValidationError('MARC file does not validate')
         if self.Type == 0:
             raise ValidationError('Type must not be none.')
 
-    def check_file(self):
+    def check_file_make_conversion(self):
         check_reader = MARCReader(self.Upload)
         try:
             for record in check_reader:
