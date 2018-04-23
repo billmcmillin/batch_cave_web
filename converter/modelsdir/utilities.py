@@ -521,7 +521,6 @@ class utilityFunctions:
                 writer.write(record)
             except:
                 record.force_utf8 = True
-                print(record)
                 writer.write(record)
         writer.close(close_fh=False)
         return memory
