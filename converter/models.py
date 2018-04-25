@@ -16,7 +16,7 @@ TYPE_CHOICES = [
 ]
 #get all functions from the BatchEdits
 functions = inspect.getmembers(batchEdits.batchEdits,inspect.isfunction)
-for idx, item in enumerate(functions):
+for idx, item in enumerate(functions[:-1]):
     TYPE_CHOICES.append((idx+1, item[0]))
 
 class ValidateOnSaveMixin(object):
