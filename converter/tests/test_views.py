@@ -30,7 +30,6 @@ class ConversionCreateViewsTest(TestCase):
         self.assertTemplateUsed(response, 'index.html')
         self.assertEqual(Conversion.objects.count(), 0)
 
-
     def test_create_uses_form(self):
         response = self.client.get('/conversions/create/')
         self.assertIsInstance(response.context['form'], ConversionForm)
@@ -73,3 +72,9 @@ class IndexViewsTest(TestCase):
         response = self.client.get('/conversions/index')
         num_in_response = response.context['Conversions'].end_index()
         self.assertEqual(num_in_response, 2)
+
+    def test_index_shows_column_headers(self):
+        response = self.client.get('/conversions/index')
+        print(response.content)
+        self.assertContains(response, '<th>Name</th>')
+        self.assertContains(response, '<th>Process</th>')

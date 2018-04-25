@@ -4,13 +4,23 @@ from converter.forms import ConversionForm
 from django.core.exceptions import ValidationError
 from django.http import HttpResponse
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.db.models.functions import Lower
 
 def home_page(request):
     return render(request, 'home.html')
 
 def index(request):
-    convs = Conversion.objects.all()
     page_num = request.GET.get('page', 1)
+    order_by = request.GET.get('order_by', 'TimeExecuted')
+    direction = request.GET.get('direction', 'des')
+    ordering = Lower(order_by)
+    #prevent order_by from treating int as string
+    if order_by == 'RecordsIn':
+        ordering = order_by
+    if direction == 'asc':
+        convs = Conversion.objects.all().order_by(ordering.desc())
+    else:
+        convs = Conversion.objects.all().order_by(ordering)
     paginator = Paginator(convs, 10)
     try:
         conversions_out = paginator.page(page_num)
@@ -19,7 +29,8 @@ def index(request):
     except EmptyPage:
         conversions_out = paginator.page(paginator.num_pages)
 
-    return render(request, 'index.html', {'Conversions': conversions_out})
+    return render(request, 'index.html', {'Conversions': conversions_out,
+'order_by' : order_by, 'direction' : direction })
 
 def create(request):
     if request.method == 'POST':
