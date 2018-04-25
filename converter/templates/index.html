@@ -6,6 +6,22 @@
             <a href="/conversions/create/">Create a New Conversion</a>
         </div>
         <table id="id_list_table" class="table">
+            <th>Time<br />
+                <a href="?order_by=TimeExecuted&direction=asc" id="sort_date_asc">v</a>
+                <a href="?order_by=TimeExecuted&direction=des" id="sort_date_desc">^</a></th>
+            <th>Name<br />
+                <a href="?order_by=Name&direction=asc">v</a>
+                <a href="?order_by=Name&direction=des">^</a></th>
+            <th>Process<br />
+                <a href="?order_by=ConvName&direction=asc">v</a>
+                <a href="?order_by=ConvName&direction=des">^</a></th>
+            <th>Input MRC</th>
+            <th>Input MRK</th>
+            <th>Output MRK</th>
+            <th>Output MRC</th>
+            <th>Records Processed<br />
+                <a href="?order_by=RecordsIn&direction=asc">v</a>
+                <a href="?order_by=RecordsIn&direction=des">^</a></th>
        {% for item in Conversions %}
             <tr><td>{{ item.TimeExecuted }}</td>
                 <td>{{ item.Name }}</td>
@@ -22,7 +38,8 @@
         {% if Conversions.has_other_pages %}
             <ul class="pagination">
                 {% if Conversions.has_previous %}
-                    <li><a href="?page={{ Conversions.previous_page_number }}">&laquo;</a></li>
+                    <li><a href="?page={{ Conversions.previous_page_number
+}}&order_by={{ order_by }}&direction={{ direction }}">&laquo;</a></li>
                 {% else %}
                     <li class="disabled"><span>&laquo;</span></li>
                 {% endif %}
@@ -30,11 +47,11 @@
                     {% if Conversions.number == i %}
                         <li class="active"><span>{{ i }} <span class="sr-only">(current)</span>
                 {% else %}
-                    <li><a href="?page={{ i }}">{{ i }}</a></li>
+                    <li><a href="?page={{ i }}&order_by={{ order_by }}&direction={{ direction }}">{{ i }}</a></li>
                 {% endif %}
                 {% endfor %}
                 {% if Conversions.has_next %}
-                    <li><a href="?page={{ Conversions.next_page_number }}">&raquo;</a></li>
+                    <li><a href="?page={{ Conversions.next_page_number }}&order_by={{ order_by }}&direction={{ direction }}">&raquo;</a></li>
                 {% else %}
                     <li class="disabled"><span>&raquo;</span></li>
                 {% endif %}
