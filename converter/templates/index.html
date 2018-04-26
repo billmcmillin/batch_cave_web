@@ -1,5 +1,4 @@
 {% extends 'base.html' %}
-
 {% block content %}
     <h2>Completed Conversions</h2>
         <div>
@@ -15,7 +14,9 @@
             <th>Process<br />
                 <a href="?order_by=ConvName&direction=asc" id="sort_proc_asc">v</a>
                 <a href="?order_by=ConvName&direction=des" id="sort_proc_des">^</a></th>
-            <th>Input MRC</th>
+            <th>Input MRC<br />
+                <a href="?order_by=Upload&direction=asc" id="sort_num_asc">v</a>
+                <a href="?order_by=Upload&direction=des" id="sort_num_des">^</a></th>
             <th>Input MRK</th>
             <th>Output MRK</th>
             <th>Output MRC</th>
@@ -26,7 +27,7 @@
             <tr><td>{{ item.TimeExecuted }}</td>
                 <td>{{ item.Name }}</td>
                 <td>{{ item.ConvName }}</td>
-                <td><a href="/download_original/{{ item.pk }}">Download Input MRC</a></td>
+                <td><a href="/download_original/{{ item.pk }}">{{ item.upload_filename }}</a></td>
                 <td><a href="/download_original_mrk/{{ item.pk }}">Download Input MRK</a></td>
                 <td><a href="/download_result_mrk/{{ item.pk }}">Download Result MRK</a></td>
                 <td><a href="/download/{{ item.pk }}">Download Result MRC</a></td>
