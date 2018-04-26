@@ -8,20 +8,20 @@
         <table id="id_list_table" class="table">
             <th>Time<br />
                 <a href="?order_by=TimeExecuted&direction=asc" id="sort_date_asc">v</a>
-                <a href="?order_by=TimeExecuted&direction=des" id="sort_date_desc">^</a></th>
+                <a href="?order_by=TimeExecuted&direction=des" id="sort_date_des">^</a></th>
             <th>Name<br />
-                <a href="?order_by=Name&direction=asc">v</a>
-                <a href="?order_by=Name&direction=des">^</a></th>
+                <a href="?order_by=Name&direction=asc" id="sort_name_asc">v</a>
+                <a href="?order_by=Name&direction=des" id="sort_name_des">^</a></th>
             <th>Process<br />
-                <a href="?order_by=ConvName&direction=asc">v</a>
-                <a href="?order_by=ConvName&direction=des">^</a></th>
+                <a href="?order_by=ConvName&direction=asc" id="sort_proc_asc">v</a>
+                <a href="?order_by=ConvName&direction=des" id="sort_proc_des">^</a></th>
             <th>Input MRC</th>
             <th>Input MRK</th>
             <th>Output MRK</th>
             <th>Output MRC</th>
             <th>Records Processed<br />
-                <a href="?order_by=RecordsIn&direction=asc">v</a>
-                <a href="?order_by=RecordsIn&direction=des">^</a></th>
+                <a href="?order_by=RecordsIn&direction=asc" id="sort_num_asc">v</a>
+                <a href="?order_by=RecordsIn&direction=des" id="sort_num_des">^</a></th>
        {% for item in Conversions %}
             <tr><td>{{ item.TimeExecuted }}</td>
                 <td>{{ item.Name }}</td>

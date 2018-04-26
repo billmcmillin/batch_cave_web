@@ -1,5 +1,6 @@
 from .base import FunctionalTest
 from selenium.webdriver.common.keys import Keys
+import time
 
 class LayoutAndStylingTest(FunctionalTest):
 
@@ -15,6 +16,26 @@ class LayoutAndStylingTest(FunctionalTest):
         )
 
     #user can sort by column
-    def test_column_sorting(self):
-        self.browser.get(self.live_server_url + '/index/')
+    def test_column_sorting_date_ascending(self):
+        self.browser.get(self.live_server_url + '/conversions/index')
         date_sort = self.browser.find_element_by_id('sort_date_asc')
+        response = date_sort.click()
+        self.wait_for(lambda: self.assertEqual(self.browser.current_url, self.live_server_url + '/conversions/index?order_by=TimeExecuted&direction=asc'))
+
+    def test_column_sorting_date_descending(self):
+        self.browser.get(self.live_server_url + '/conversions/index')
+        date_sort = self.browser.find_element_by_id('sort_date_des')
+        response = date_sort.click()
+        self.wait_for(lambda: self.assertEqual(self.browser.current_url, self.live_server_url + '/conversions/index?order_by=TimeExecuted&direction=des'))
+
+    def test_column_sorting_name_ascending(self):
+        self.browser.get(self.live_server_url + '/conversions/index')
+        date_sort = self.browser.find_element_by_id('sort_name_asc')
+        response = date_sort.click()
+        self.wait_for(lambda: self.assertEqual(self.browser.current_url, self.live_server_url + '/conversions/index?order_by=Name&direction=asc'))
+
+    def test_column_sorting_name_descending(self):
+        self.browser.get(self.live_server_url + '/conversions/index')
+        date_sort = self.browser.find_element_by_id('sort_name_des')
+        response = date_sort.click()
+        self.wait_for(lambda: self.assertEqual(self.browser.current_url, self.live_server_url + '/conversions/index?order_by=Name&direction=des'))
