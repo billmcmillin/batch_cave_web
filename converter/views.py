@@ -15,10 +15,12 @@ def index(request):
     direction = request.GET.get('direction', 'des')
     ordering = Lower(order_by)
     #prevent order_by from treating int as string
-    if order_by == 'RecordsIn':
-        ordering = order_by
-    if direction == 'asc':
-        convs = Conversion.objects.all().order_by(ordering.desc())
+    if direction == 'des':
+        if order_by == 'RecordsIn':
+            ordering = order_by
+            convs = Conversion.objects.all().order_by(ordering)
+        else:
+            convs = Conversion.objects.all().order_by(ordering.desc())
     else:
         convs = Conversion.objects.all().order_by(ordering)
     paginator = Paginator(convs, 10)
