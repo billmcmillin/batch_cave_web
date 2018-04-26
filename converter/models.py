@@ -10,6 +10,7 @@ import pymarc
 from pymarc import MARCReader
 from converter.modelsdir import batchEdits
 from converter.modelsdir.utilities import utilityFunctions
+import os
 
 TYPE_CHOICES = [
     (0, 'None'),
@@ -85,6 +86,9 @@ class Conversion(ValidateOnSaveMixin, models.Model):
         #save output MRK
         django_output_mrk = BatchEdits.utilities.CreateMRK(self.Output.path)
         self.MrkOut.save("Conversion_Results.mrk", django_output_mrk, save=False)
+
+    def upload_filename(self):
+        return os.path.basename(self.Upload.name)
 
     class Meta:
         ordering = ['-TimeExecuted']
