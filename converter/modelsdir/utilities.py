@@ -86,6 +86,11 @@ class utilityFunctions:
         return rec
 
     def CleanURL(self,url):
+        # add space and colon to $3
+        sub3 = url['3'] + ' :'
+        print(sub3)
+        url.delete_subfield('3')
+        url.add_subfield('3', sub3)
         #delete all occurrences of $2
         url.delete_subfield('2')
         #delete all $z
@@ -97,70 +102,19 @@ class utilityFunctions:
         #delete all $y
         url.delete_subfield('y')
         #move leading $3 to EOF
-        #
         return url
 
     def Standardize856_956(self, *args):
         rec = args[0]
-        if rec['856'] is not None:
-            field856 = rec['856']
-            if rec['856'].indicator1 != '4':
-                print('Found URL field with unexpected indicator')
-            self.CleanURL(field856)
-            if len(args) > 1 and type(args[1]) == str:
-                rec['856'].add_subfield('3', args[1])
-
-        if rec['956'] is not None:
-            field956 = rec['956']
-            if rec['956'].indicator1 != '4':
-                print('Found URL field with unexpected indicator')
-            self.CleanURL(field956)
-            if len(args) > 1 and type(args[1]) == str:
-                rec['956'].add_subfield('3', args[1])
-
+        for field in rec:
+            if field.tag == '856' or field.tag == '956':
+                if field.indicator1 != '4':
+                    print('Found URL field with unexpected indicator')
+                self.CleanURL(field)
+                if len(args) > 1 and type(args[1]) == str:
+                    field.add_subfield('3', args[1])
         return rec
 
-    def Standardize856_956_BAK(self, *args):
-        rec = args[0]
-        output = []
-        #Check 8/956 indicator 1 code for non http URL
-        if rec['856'] is not None:
-            field856 = rec['856'].value()
-            print(field856)
-        ifFieldInd1 = re.findall('=[8|9]56  [^4]..*', args[0])
-        #if found, interrupt script with alert
-        if URLFieldInd1:
-            print('\a\a\nFound URL fields(s) with unexpected indicator:\n')
-            for URLField in URLFieldInd1:
-                print('\t' + URLField)
-            raw_input('\nPress <ENTER> to continue\n')
-        #split file into list of lines
-        x = args[0].split('\n')
-        for line in x:
-            match = re.search('=[8|9]56  ..', line)
-            if match:
-                #delete all occurance of $2
-                line = re.sub('\$2http[^\$]*', '', line)
-                #delete all $z
-                line = re.sub('\$z[^\$]*', '', line)
-                #delete all occurance of $q
-                line = re.sub('\$q[^\$]*', '', line)
-                #delete all occurance of $y
-                line = re.sub('\$y[^\$]*', '', line)
-                #move leading $3 to EOF
-                line = re.sub('(=[8|9]56  ..)(\$3.*?)(\$u.*)', '\\1\\3\\2', line)
-                if len(args) > 1 and type(args[1]) == str:
-                    if re.search('\$3', line):
-                        line = re.sub('(\$3)(.*)', '\\1{0} (\\2)'.format(args[1]), line)
-                    else:
-                        line = line + '$3{0} :'.format(args[1])
-                #add standard $z
-                line = line + '$zConnect to resource online'
-                output.append(line)
-            else:
-                output.append(line)
-        x = '\n'.join(output)
-        return x
 
     def CharRefTrans(self, rec):#Character reference translation table
         CharRefTransTable = {
