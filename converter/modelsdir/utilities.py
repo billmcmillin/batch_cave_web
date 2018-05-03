@@ -86,11 +86,6 @@ class utilityFunctions:
         return rec
 
     def CleanURL(self,url):
-        # add space and colon to $3
-        sub3 = url['3'] + ' :'
-        print(sub3)
-        url.delete_subfield('3')
-        url.add_subfield('3', sub3)
         #delete all occurrences of $2
         url.delete_subfield('2')
         #delete all $z
@@ -102,6 +97,11 @@ class utilityFunctions:
         #delete all $y
         url.delete_subfield('y')
         #move leading $3 to EOF
+        # add space and colon to $3
+        if url['3'] is not None:
+            sub3 = url['3'] + ' :'
+            url.delete_subfield('3')
+            url.add_subfield('3', sub3)
         return url
 
     def Standardize856_956(self, *args):
