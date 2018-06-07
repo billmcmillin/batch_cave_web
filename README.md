@@ -60,3 +60,69 @@ If there are additional apps in the future, it will be best to collect them all 
 ## The database
 Flush development db with
 ```python3 manage.py flush```
+
+## Set up Staging Site on a new server
+* install conda
+``` curl -O https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh
+md5sum Miniconda....
+``` 
+Check against installer md5 at https://repo.continuum.io/miniconda/
+
+```
+sudo bash Miniconda...
+```
+Install in /usr/bin/miniconda3
+append source to .bashrc
+do for local user as well as root
+sftp conda env file to server
+
+```
+conda env create -f conda_batch_cave_env.txt
+source activate batchcave
+cd /var/www/html/batch_cave_web
+source .env
+pip install pymarc
+```
+
+* Allow it through the firewall
+```
+sudo firewall-cmd --zone=public --add-port=8000/tcp
+```
+
+* Add host to ALLOWED_HOSTS in settings
+ 
+* sftp the .env file to the server
+* cd /var/www/html
+* sudo git clone https://github.com/billmcmillin/batch_cave_web.git
+* sudo mv ~/.env batch_cave_web
+* ```python3 manage.py runserver 0.0.0.0:8000```
+
+## Apache settings
+```
+ProxyPass / http://localhost:8000/
+ProxyPassReverse / http://localhost:8000/ 
+```
+
+## Setting up a new Production Site
+* RHEL and Apache
+```cd /var/www/html
+source activate batchcave
+sudo yum install mod_wsgi
+conda install gunicorn
+
+sudo git clone https://github.com/billmcmillin/batch_cave_web.git
+
+sudo su tricerashopper
+
+cd /var/www/html/batch_cave_web
+gunicorn batch_cave.wsgi:application
+
+#### Enable static files to be served by Apache, not Gunicorn
+```
+python manage.py collectstatic --noinput
+```
+
+in /etc/httpd/conf/httpd.conf: 
+ProxyPassMatch ^/static !
+ProxyPass / http://localhost:8000/
+ProxyPassReverse / http://localhost:8000/ 
