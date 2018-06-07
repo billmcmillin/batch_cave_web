@@ -1,0 +1,15 @@
+[Unit]
+Description=Gunicorn server for batch_cave_web
+
+[Service]
+Restart=on-failure
+User=tricerashopper
+WorkingDirectory=/var/www/html/batch_cave_web/
+EnvironmentFile=/var/www/html/batch_cave_web/.env
+
+ExecStartPre=source .bashrc; /home/tricerashopper/miniconda3/bin/conda activate batchcave
+
+ExecStart=/home/tricerashopper/.conda/envs/batchcave/bin/gunicorn batch_cave.wsgi:application
+
+[Install]
+WantedBy=multi-user.target
