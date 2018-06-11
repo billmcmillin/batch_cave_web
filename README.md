@@ -146,3 +146,48 @@ a - random.SysRandom()
 >>> dk
 
 ```
+echo "conda activate" >> ~/.bashrc
+/etc/systemd/system/gunicorn.service
+#### Enable Gunicorn to run as a service with Systemd
+[Unit]
+Description=Gunicorn server for BatchCave 
+
+[Service]
+Restart=on-failure  
+User=tricerashopper
+WorkingDirectory=/var/www/html/batch_cave_web
+EnvironmentFile=/var/www/html/batch_cave_web/.env
+
+ExecStart=/home/tricerashopper/.conda/envs/batchcave/bin/gunicorn batch_cave.wsgi:application
+
+[Install]
+WantedBy=multi-user.target 
+
+--------------
+sudo systemctl daemon-reload
+sudo systemctl enable gunicorn
+sudo systemctl start gunicorn
+
+
+Run with ```sudo systemctl start gunicorn```
+* note: export command must be removed from env file for this work
+
+##Updating 
+* Log in to tricerashopper
+* sudo systemctl stop gunicorn
+* sudo su tricerashoper
+* cd /var/www/html/batch_cave_web
+* git pull
+* exit
+* sudo systemctl start gunicorn
+
+
+##Fresh install on production
+```
+sudo su tricerashopper
+cd ~
+curl -O https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh
+bash Miniconda....sh
+source .bashrc
+
+
