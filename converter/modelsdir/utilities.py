@@ -42,18 +42,15 @@ class utilityFunctions:
                 verify = input('\nYou have selected:\n\n\t' + str(x) + '. ' + ChangeScriptsDict[x][1] + '\n\nConfirm (y/n): ')
         return x
 
-    def MarcEditXmlToMarc(self, x):
-        mrcFileName = re.sub('.xml', '.mrc', x)
-        print('\n<Converting from XML to MARC>\n')
-        #subprocess.call([MonoBin,MarcEditBin,"-s", x, "-d",mrcFileName,"-xmlmarc","-marc8", "-mxslt","/opt/marcedit/xslt/MARC21XML2Mnemonic_plugin.xsl"])
-        marcStr = ''
+
+    def BreakMARCXMLFile(self, x):
+        #break the file into a list of Record objects;
+        #mrkFileName = re.sub('.mrc', '.mrk', x)
+        print("\n<Breaking MARC file>\n")
+        records = []
         with open(x, 'rb') as fh:
-            recs = marcxml.parse_xml_to_array(fh)
-            for rec in recs:
-                marcStr += str(rec)
-
-        return marcStr
-
+            records = marcxml.parse_xml_to_array(fh)
+        return records
 
     def BreakMARCFile(self, x):
         #break the file into a list of Record objects;
