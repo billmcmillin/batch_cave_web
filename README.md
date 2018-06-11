@@ -116,6 +116,7 @@ sudo su tricerashopper
 
 cd /var/www/html/batch_cave_web
 gunicorn batch_cave.wsgi:application
+```
 
 #### Enable static files to be served by Apache, not Gunicorn
 ```
@@ -126,3 +127,22 @@ in /etc/httpd/conf/httpd.conf:
 ProxyPassMatch ^/static !
 ProxyPass / http://localhost:8000/
 ProxyPassReverse / http://localhost:8000/ 
+
+Then
+```
+sudo systemctl restart httpd.service
+```
+restart gunicorn
+
+
+#### set a unique key on each server
+in python:
+```
+a - random.SysRandom()
+>>> dk = ''
+>>> for i in range(0,50):
+...     dk += a.choice('abcdefghijklmnopqrstuvwxyz01234567890')
+... 
+>>> dk
+
+```

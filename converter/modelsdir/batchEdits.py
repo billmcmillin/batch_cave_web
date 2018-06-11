@@ -46,8 +46,198 @@ class batchEdits:
         x = self.utilities.CreateMRC(recs)
         return x
 
-########### TODO: add ER_OECD ################
+    def ER_ASP_EDIV(self, x, name='ER-ASP-EDIV'):
+        print('\nRunning change script '+ name + '\n')
+        recs = utilities.BreakMARCFile(x)
+        for rec in recs:
+        ##### Keep everything above this comment ########
+        ##### Make changes to each record below ########
+            # Change =001 field to =002,
+            rec.add_ordered_field(Field(tag = '002',data = rec['001'].value()))
+            # remove 001
+            rec.remove_field(rec.get_fields('001')[0])
+            rec.add_ordered_field(Field(tag = '949', indicators = ['\\', '\\'], subfields = ['a','*b3=z;bn=buint;']))
+            rec.add_ordered_field(Field(tag = '949', indicators = ['\\', '1'], subfields = ['l','uint', 'r', 's', 't', '99']))
+            rec.add_ordered_field(Field(tag = '003', data = 'ER-ASP-EDIV'))
+            rec.add_ordered_field(Field(tag = '710', indicators = ['\\', '2'], subfields = ['a','Alexander Street Press']))
+            rec.add_ordered_field(Field(tag = '730', indicators = ['0', '\\'], subfields = ['a','Alexander Street Press.','p','Education in video.','5','OCU']))
+            ###### Keep everything below this ########
+            rec = utilities.DeleteLocGov(rec)
+            rec = utilities.Standardize856_956(rec,'Alexander Street Press' )
+            rec = utilities.order_007(rec)
+            rec = utilities.AddEresourceGMD(rec)
+        rec = utilities.SaveToMRK(recs, filename)
+        x = utilities.MakeMARCFile(recs, filename)
+        return x
 
+    def ER_TF_CRC(self, x, name='ER-T&F-CRC'):
+        print('\nRunning change script '+ name + '\n')
+        recs = utilities.BreakMARCFile(x)
+        for rec in recs:
+            # Change =001 field to =002,
+            rec.add_ordered_field(Field(tag = '002',data = 't&fcrc_' + rec['001'].value()))
+            # remove 001
+            rec.remove_field(rec.get_fields('001')[0])
+            # remove supplied 003
+            try:
+                rec.remove_field(rec.get_fields('003')[0])
+            except:
+                a = 1
+            # ADD local field: 003, 533, 730, 949            
+            rec.add_ordered_field(Field(tag = '949', indicators = ['\\', '\\'], subfields = ['a','*b3=z;bn=buint;']))
+            rec.add_ordered_field(Field(tag = '949', indicators = ['\\', '1'], subfields = ['l','uint', 'r', 's', 't', '99']))
+            rec.add_ordered_field(Field(tag = '003', data = 'ER-T&F-CRC'))
+            rec.add_ordered_field(Field(tag = '533', indicators = ['\\', '\\'], subfields = ['a', 'Electronic reproduction.']))          
+            rec.add_ordered_field(Field(tag = '506', indicators = ['\\', '\\'], subfields = ['a', 'Made available through Taylor & Francis. Access restricted to users at licensed institutions']))
+            rec.add_ordered_field(Field(tag = '730', indicators = ['0', '\\'], subfields = ['a','Taylor & Francis (CRC Press).', '5', 'OCU']))
+            rec = utilities.DeleteLocGov(rec)
+            rec = utilities.AddEresourceGMD(rec)
+            rec = utilities.Standardize856_956(rec, 'Taylor & Francis')
+            #rec = utilities.DedupRecords(x)
+        rec = utilities.SaveToMRK(recs, filename)
+        x = utilities.MakeMARCFile(recs, filename)
+        return x
+
+    def ER_OL_SPRebk(self, x, name='ER-O/L-SPRebk'):
+        print('\nRunning change script '+ name + '\n')
+        recs = utilities.BreakMARCFile(x)
+        for rec in recs:
+        ##### Keep everything above this comment ########
+        ##### Make changes to each record below ########
+            rec.add_ordered_field(Field(tag = '002', data = 'O/L-SPRebk'))
+            rec.add_ordered_field(Field(tag = '003', data = 'ER-O/L-SPRebk'))
+            rec.add_ordered_field(Field(tag = '730', indicators = ['0', '\\'], subfields = ['a', 'SpringerLink']))
+            rec.add_ordered_field(Field(tag = '730', indicators = ['0', '\\'], subfields = ['a', 'Springer ebooks.', '5', 'OCU']))
+            rec.add_ordered_field(Field(tag = '949', indicators = ['\\', '\\'], subfields = ['a', '*bn=bolin;']))
+            rec.add_ordered_field(Field(tag = '949', indicators = ['\\', '1'], subfields = ['l','olink', 'r', 's', 't', '99']))
+            ###### Keep everything below this ########
+            rec = utilities.DeleteLocGov(rec)
+            rec = utilities.AddEresourceGMD(rec)
+        rec = utilities.SaveToMRK(recs, filename)
+        x = utilities.MakeMARCFile(recs, filename)
+        return x
+
+    def ER_OL_Safari(self, x, name='ER-O/L-Safari'):
+        print('\nRunning change script '+ name + '\n')
+        recs = utilities.BreakMARCFile(x)
+        regexes = [
+            re.compile(r'.*EBSCOhost.*\n'),
+            re.compile(r'.*OhioLINK.*'),
+            re.compile(r'.*SpringerLink.*\n'),
+            re.compile(r'.*Wiley.*\n'),
+        ]
+
+        for rec in recs:
+            for field in rec:
+                if field.tag == '856':
+                    #if any of the 856 fields match any of the above regex patterns, delete the whole field`
+                    if any(regex.match(field.value()) for regex in regexes):
+                        rec.remove_field(field)
+
+            rec.add_ordered_field(Field(tag = '949', indicators = ['\\', '1'],subfields = ['l','olink', 'r', 's', 't', '99']))
+            rec.add_ordered_field(Field(tag = '949', indicators = ['\\', '\\'],subfields = ['a','*b3=z;bn=bolin;']))
+            rec.add_ordered_field(Field(tag = '730', indicators =['0','\\'],subfields = ['a','Safari books online.', '5', 'OCU']))
+            rec.add_ordered_field(Field(tag = '003',data = 'ER-O/L-Safari'))
+            rec.add_ordered_field(Field(tag = '002',data = 'O/L-Safari'))
+            ###### Keep everything below this ########
+            rec = utilities.DeleteLocGov(rec)
+            rec = utilities.AddEresourceGMD(rec)
+        rec = utilities.SaveToMRK(recs, filename)
+        x = utilities.MakeMARCFile(recs, filename)
+        return x
+
+    def ER_OL_OSO(self, x, name='ER-O/L-OSO'):
+        print('\nRunning change script '+ name + '\n')
+        recs = utilities.BreakMARCFile(x)
+        for rec in recs:
+        ##### Keep everything above this comment ########
+        ##### Make changes to each record below ########
+            rec.add_ordered_field(Field(tag = '002', data = 'O/L-OSO'))
+            rec.add_ordered_field(Field(tag = '003', data = 'ER-O/L-OSO'))
+            rec.add_ordered_field(Field(tag = '730', indicators = ['0', '\\'], subfields = ['a', 'Oxford scholarship online.', '5', 'OCU']))
+            rec.add_ordered_field(Field(tag = '949', indicators = ['\\', '\\'], subfields = ['a', '*bn=bolin;']))
+            rec.add_ordered_field(Field(tag = '949', indicators = ['\\', '1'], subfields = ['l','olink', 'r', 's', 't', '99']))
+            ###### Keep everything below this ########
+            rec = utilities.DeleteLocGov(rec)
+            rec = utilities.AddEresourceGMD(rec)
+        rec = utilities.SaveToMRK(recs, filename)
+        x = utilities.MakeMARCFile(recs, filename)
+        return x
+
+    def ER_OL_ACLS(self, x, name='ER-O/L-ACLS'):
+        print('\nRunning change script '+ name + '\n')
+        recs = utilities.BreakMARCFile(x)
+        for rec in recs:
+        ##### Keep everything above this comment ########
+        ##### Make changes to each record below ########
+            rec.add_ordered_field(Field(tag = '002', data = 'O/L-ACLS'))
+            rec.add_ordered_field(Field(tag = '003', data = 'ER-O/L-ACLS'))
+            rec.add_ordered_field(Field(tag = '730', indicators = ['0', '\\'], subfields = ['a', 'History E-Book project']))
+            rec.add_ordered_field(Field(tag = '730', indicators = ['0', '\\'], subfields = ['a', 'ACLS History E-Books.', '5', 'OCU']))
+            rec.add_ordered_field(Field(tag = '949', indicators = ['\\', '\\'], subfields = ['a', '*bn=bolin;']))
+            rec.add_ordered_field(Field(tag = '949', indicators = ['\\', '1'], subfields = ['l','olink', 'r', 's', 't', '99']))
+            ###### Keep everything below this ########
+            rec = utilities.DeleteLocGov(rec)
+            rec = utilities.AddEresourceGMD(rec)
+        rec = utilities.SaveToMRK(recs, filename)
+        x = utilities.MakeMARCFile(recs, filename)
+        return x
+
+    def ER_OL_Wiley(self, x, name='ER-O/L-Wiley-InterSci'):
+        print('\nRunning change script '+ name + '\n')
+        recs = utilities.BreakMARCFile(x)
+        for rec in recs:
+        ##### Keep everything above this comment ########
+        ##### Make changes to each record below ########
+            rec.add_ordered_field(Field(tag = '002', data = 'O/L-Wiley-InterSci'))
+            rec.add_ordered_field(Field(tag = '003', data = 'ER-O/L-Wiley-InterSci'))
+            rec.add_ordered_field(Field(tag = '730', indicators = ['0', '\\'], subfields = ['a', 'Wiley InterScience ebooks']))
+            rec.add_ordered_field(Field(tag = '730', indicators = ['0', '\\'], subfields = ['a', 'Wiley online library.', '5', 'OCU']))
+            rec.add_ordered_field(Field(tag = '949', indicators = ['\\', '\\'], subfields = ['a', '*bn=bolin;']))
+            rec.add_ordered_field(Field(tag = '949', indicators = ['\\', '1'], subfields = ['l','olink', 'r', 's', 't', '99']))
+            ###### Keep everything below this ########
+            rec = utilities.DeleteLocGov(rec)
+            rec = utilities.AddEresourceGMD(rec)
+        rec = utilities.SaveToMRK(recs, filename)
+        x = utilities.MakeMARCFile(recs, filename)
+        return x
+
+    def ER_OL_UPSO(self, x, name='ER-O/L-UPSO'):
+        print('\nRunning change script '+ name + '\n')
+        recs = utilities.BreakMARCFile(x)
+        for rec in recs:
+        ##### Keep everything above this comment ########
+        ##### Make changes to each record below ########
+            rec.add_ordered_field(Field(tag = '002', data = 'O/L-UPSO'))
+            rec.add_ordered_field(Field(tag = '003', data = 'ER-O/L-UPSO'))
+            rec.add_ordered_field(Field(tag = '730', indicators = ['0', '\\'], subfields = ['a', 'University Press Scholarship Online.', '5', 'OCU']))
+            rec.add_ordered_field(Field(tag = '949', indicators = ['\\', '\\'], subfields = ['a', '*bn=bolin;']))
+            rec.add_ordered_field(Field(tag = '949', indicators = ['\\', '1'], subfields = ['l','olink', 'r', 's', 't', '99']))
+            ###### Keep everything below this ########
+            rec = utilities.DeleteLocGov(rec)
+            rec = utilities.AddEresourceGMD(rec)
+        rec = utilities.SaveToMRK(recs, filename)
+        x = utilities.MakeMARCFile(recs, filename)
+        return x
+
+
+    def ER_OL_APA_BOOKS(self, x, name='ER-O/L-APA Books'):
+        print('\nRunning change script '+ name + '\n')
+        recs = utilities.BreakMARCFile(x)
+        for rec in recs:
+        ##### Keep everything above this comment ########
+        ##### Make changes to each record below ########
+            rec.add_ordered_field(Field(tag = '002', data = 'O/L-APA Books'))
+            rec.add_ordered_field(Field(tag = '003', data = 'ER-O/L-APA Books'))
+            rec.add_ordered_field(Field(tag = '730', indicators = ['0', '\\'], subfields = ['a', 'APA Books.', '5', 'OCU']))
+            rec.add_ordered_field(Field(tag = '949', indicators = ['\\', '\\'], subfields = ['a', '*bn=bolin;']))
+            rec.add_ordered_field(Field(tag = '949', indicators = ['\\', '1'], subfields = ['l','olink', 'r', 's', 't', '99']))
+            ###### Keep everything below this ########
+            rec = utilities.DeleteLocGov(rec)
+            rec = utilities.AddEresourceGMD(rec)
+        rec = utilities.SaveToMRK(recs, filename)
+        x = utilities.MakeMARCFile(recs, filename)
+        return x
 
     def ER_OCLC_WCS_SDebk(self, x, name='ER-OCLC-WCS-SDebk'):
         recs = self.utilities.BreakMARCFile(x)
