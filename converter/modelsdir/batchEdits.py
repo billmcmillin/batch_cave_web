@@ -8,46 +8,8 @@ class batchEdits:
     def __init__(self):
         self.utilities = utilityFunctions()
 
-    def ER_EAI_2nd(self, x, name='ER-EAI-2ND'):
-        recs = self.utilities.BreakMARCFile(x)
-        for rec in recs:
-            # Change =001 field to =002, and add 003
-            rec.add_ordered_field(Field(tag = '002',data = rec['001'].value()))
-            rec.remove_field(rec.get_fields('001')[0])
-            rec.remove_field(rec.get_fields('003')[0])
-            rec.add_ordered_field(Field(tag = '003',data = 'ER-EAI-2nd'))
-            # ADD local 730, 949 
-            rec.add_ordered_field(Field(tag = '949', indicators = ['\\', '\\'], subfields = ['a','*b3=z;bn=buint;']))
-            rec.add_ordered_field(Field(tag = '949', indicators = ['\\', '1'], subfields = ['l','uint', 'r', 's', 't', '99']))
-            rec.add_ordered_field(Field(tag = '730', indicators = ['0', '\\'], subfields = ['a','Early American im
-            rec.remove_field(rec.get_fields('008')[0])
-            rec = self.utilities.DeleteLocGov(rec)
-            rec = self.utilities.Standardize856_956(rec)
-        x = self.utilities.CreateMRC(recs)
-        return x
-
-
-    def ER_EAI_1st(self, x, name='ER-EAI-1st'):
-        #iterate over list of Record objects
-        recs = self.utilities.BreakMARCFile(x)
-        for rec in recs:
-            # Change =001 field to =002, and add 003
-            rec.add_ordered_field(Field(tag = '002',data = rec['001'].value()))
-            rec.remove_field(rec.get_fields('001')[0])
-            rec.remove_field(rec.get_fields('003')[0])
-            rec.add_ordered_field(Field(tag = '003',data = 'ER-EAI-1st'))
-            rec.add_ordered_field(Field(tag = '949', indicators = ['\\', '\\'], subfields = ['a','*b3=z;bn=buint;']))
-            rec.add_ordered_field(Field(tag = '949', indicators = ['\\', '1'], subfields = ['l','uint', 'r', 's', 't', '99']))
-            rec.add_ordered_field(Field(tag = '730', indicators = ['0', '\\'],subfields = ['a','Early American im
-            rec.add_ordered_field(Field(tag = '506', indicators = ['\\', '\\'], subfields = ['a','Access restricted to users at subscribing institutions']))
-            rec.remove_field(rec.get_fields('008')[0])
-            rec = self.utilities.DeleteLocGov(rec)
-            rec = self.utilities.Standardize856_956(rec, 'Readex')
-        x = self.utilities.CreateMRC(recs)
-        return x
 
     def ER_ASP_EDIV(self, x, name='ER-ASP-EDIV'):
-        
         recs = utilities.BreakMARCFile(x)
         for rec in recs:
         ##### Keep everything above this comment ########
@@ -70,7 +32,6 @@ class batchEdits:
         return x
 
     def ER_TF_CRC(self, x, name='ER-T&F-CRC'):
-        
         recs = utilities.BreakMARCFile(x)
         for rec in recs:
             # Change =001 field to =002,
