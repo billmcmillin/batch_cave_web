@@ -19,7 +19,7 @@ class batchEdits:
             # ADD local 730, 949 
             rec.add_ordered_field(Field(tag = '949', indicators = ['\\', '\\'], subfields = ['a','*b3=z;bn=buint;']))
             rec.add_ordered_field(Field(tag = '949', indicators = ['\\', '1'], subfields = ['l','uint', 'r', 's', 't', '99']))
-            rec.add_ordered_field(Field(tag = '730', indicators = ['0', '\\'], subfields = ['a','Early American imprints (Online).', 'n', 'Second series,', 'p','Shaw-Shoemaker.', '5', 'OCU']))
+            rec.add_ordered_field(Field(tag = '730', indicators = ['0', '\\'], subfields = ['a','Early American im
             rec.remove_field(rec.get_fields('008')[0])
             rec = self.utilities.DeleteLocGov(rec)
             rec = self.utilities.Standardize856_956(rec)
@@ -38,7 +38,7 @@ class batchEdits:
             rec.add_ordered_field(Field(tag = '003',data = 'ER-EAI-1st'))
             rec.add_ordered_field(Field(tag = '949', indicators = ['\\', '\\'], subfields = ['a','*b3=z;bn=buint;']))
             rec.add_ordered_field(Field(tag = '949', indicators = ['\\', '1'], subfields = ['l','uint', 'r', 's', 't', '99']))
-            rec.add_ordered_field(Field(tag = '730', indicators = ['0', '\\'],subfields = ['a','Early American imprints (Online).', 'n', 'First series,','p','Evans.', '5', 'OCU']))
+            rec.add_ordered_field(Field(tag = '730', indicators = ['0', '\\'],subfields = ['a','Early American im
             rec.add_ordered_field(Field(tag = '506', indicators = ['\\', '\\'], subfields = ['a','Access restricted to users at subscribing institutions']))
             rec.remove_field(rec.get_fields('008')[0])
             rec = self.utilities.DeleteLocGov(rec)
@@ -47,7 +47,7 @@ class batchEdits:
         return x
 
     def ER_ASP_EDIV(self, x, name='ER-ASP-EDIV'):
-        print('\nRunning change script '+ name + '\n')
+        
         recs = utilities.BreakMARCFile(x)
         for rec in recs:
         ##### Keep everything above this comment ########
@@ -66,12 +66,11 @@ class batchEdits:
             rec = utilities.Standardize856_956(rec,'Alexander Street Press' )
             rec = utilities.order_007(rec)
             rec = utilities.AddEresourceGMD(rec)
-        rec = utilities.SaveToMRK(recs, filename)
-        x = utilities.MakeMARCFile(recs, filename)
+        x = self.utilities.CreateMRC(recs)
         return x
 
     def ER_TF_CRC(self, x, name='ER-T&F-CRC'):
-        print('\nRunning change script '+ name + '\n')
+        
         recs = utilities.BreakMARCFile(x)
         for rec in recs:
             # Change =001 field to =002,
@@ -83,23 +82,23 @@ class batchEdits:
                 rec.remove_field(rec.get_fields('003')[0])
             except:
                 a = 1
-            # ADD local field: 003, 533, 730, 949            
+            # ADD local field: 003, 533, 730, 949
             rec.add_ordered_field(Field(tag = '949', indicators = ['\\', '\\'], subfields = ['a','*b3=z;bn=buint;']))
             rec.add_ordered_field(Field(tag = '949', indicators = ['\\', '1'], subfields = ['l','uint', 'r', 's', 't', '99']))
             rec.add_ordered_field(Field(tag = '003', data = 'ER-T&F-CRC'))
-            rec.add_ordered_field(Field(tag = '533', indicators = ['\\', '\\'], subfields = ['a', 'Electronic reproduction.']))          
+            rec.add_ordered_field(Field(tag = '533', indicators = ['\\', '\\'], subfields = ['a', 'Electronic reproduction.']))
             rec.add_ordered_field(Field(tag = '506', indicators = ['\\', '\\'], subfields = ['a', 'Made available through Taylor & Francis. Access restricted to users at licensed institutions']))
             rec.add_ordered_field(Field(tag = '730', indicators = ['0', '\\'], subfields = ['a','Taylor & Francis (CRC Press).', '5', 'OCU']))
             rec = utilities.DeleteLocGov(rec)
             rec = utilities.AddEresourceGMD(rec)
             rec = utilities.Standardize856_956(rec, 'Taylor & Francis')
             #rec = utilities.DedupRecords(x)
-        rec = utilities.SaveToMRK(recs, filename)
-        x = utilities.MakeMARCFile(recs, filename)
+
+        x = self.utilities.CreateMRC(recs)
         return x
 
     def ER_OL_SPRebk(self, x, name='ER-O/L-SPRebk'):
-        print('\nRunning change script '+ name + '\n')
+        
         recs = utilities.BreakMARCFile(x)
         for rec in recs:
         ##### Keep everything above this comment ########
@@ -113,12 +112,12 @@ class batchEdits:
             ###### Keep everything below this ########
             rec = utilities.DeleteLocGov(rec)
             rec = utilities.AddEresourceGMD(rec)
-        rec = utilities.SaveToMRK(recs, filename)
-        x = utilities.MakeMARCFile(recs, filename)
+
+        x = self.utilities.CreateMRC(recs)
         return x
 
     def ER_OL_Safari(self, x, name='ER-O/L-Safari'):
-        print('\nRunning change script '+ name + '\n')
+        
         recs = utilities.BreakMARCFile(x)
         regexes = [
             re.compile(r'.*EBSCOhost.*\n'),
@@ -142,12 +141,12 @@ class batchEdits:
             ###### Keep everything below this ########
             rec = utilities.DeleteLocGov(rec)
             rec = utilities.AddEresourceGMD(rec)
-        rec = utilities.SaveToMRK(recs, filename)
-        x = utilities.MakeMARCFile(recs, filename)
+
+        x = self.utilities.CreateMRC(recs)
         return x
 
     def ER_OL_OSO(self, x, name='ER-O/L-OSO'):
-        print('\nRunning change script '+ name + '\n')
+        
         recs = utilities.BreakMARCFile(x)
         for rec in recs:
         ##### Keep everything above this comment ########
@@ -160,12 +159,12 @@ class batchEdits:
             ###### Keep everything below this ########
             rec = utilities.DeleteLocGov(rec)
             rec = utilities.AddEresourceGMD(rec)
-        rec = utilities.SaveToMRK(recs, filename)
-        x = utilities.MakeMARCFile(recs, filename)
+
+        x = self.utilities.CreateMRC(recs)
         return x
 
     def ER_OL_ACLS(self, x, name='ER-O/L-ACLS'):
-        print('\nRunning change script '+ name + '\n')
+        
         recs = utilities.BreakMARCFile(x)
         for rec in recs:
         ##### Keep everything above this comment ########
@@ -179,12 +178,12 @@ class batchEdits:
             ###### Keep everything below this ########
             rec = utilities.DeleteLocGov(rec)
             rec = utilities.AddEresourceGMD(rec)
-        rec = utilities.SaveToMRK(recs, filename)
-        x = utilities.MakeMARCFile(recs, filename)
+
+        x = self.utilities.CreateMRC(recs)
         return x
 
     def ER_OL_Wiley(self, x, name='ER-O/L-Wiley-InterSci'):
-        print('\nRunning change script '+ name + '\n')
+        
         recs = utilities.BreakMARCFile(x)
         for rec in recs:
         ##### Keep everything above this comment ########
@@ -198,12 +197,12 @@ class batchEdits:
             ###### Keep everything below this ########
             rec = utilities.DeleteLocGov(rec)
             rec = utilities.AddEresourceGMD(rec)
-        rec = utilities.SaveToMRK(recs, filename)
-        x = utilities.MakeMARCFile(recs, filename)
+
+        x = self.utilities.CreateMRC(recs)
         return x
 
     def ER_OL_UPSO(self, x, name='ER-O/L-UPSO'):
-        print('\nRunning change script '+ name + '\n')
+        
         recs = utilities.BreakMARCFile(x)
         for rec in recs:
         ##### Keep everything above this comment ########
@@ -216,13 +215,13 @@ class batchEdits:
             ###### Keep everything below this ########
             rec = utilities.DeleteLocGov(rec)
             rec = utilities.AddEresourceGMD(rec)
-        rec = utilities.SaveToMRK(recs, filename)
-        x = utilities.MakeMARCFile(recs, filename)
+
+        x = self.utilities.CreateMRC(recs)
         return x
 
 
     def ER_OL_APA_BOOKS(self, x, name='ER-O/L-APA Books'):
-        print('\nRunning change script '+ name + '\n')
+        
         recs = utilities.BreakMARCFile(x)
         for rec in recs:
         ##### Keep everything above this comment ########
@@ -235,8 +234,8 @@ class batchEdits:
             ###### Keep everything below this ########
             rec = utilities.DeleteLocGov(rec)
             rec = utilities.AddEresourceGMD(rec)
-        rec = utilities.SaveToMRK(recs, filename)
-        x = utilities.MakeMARCFile(recs, filename)
+
+        x = self.utilities.CreateMRC(recs)
         return x
 
     def ER_OCLC_WCS_SDebk(self, x, name='ER-OCLC-WCS-SDebk'):

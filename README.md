@@ -173,6 +173,9 @@ Run with ```sudo systemctl start gunicorn```
 * note: export command must be removed from env file for this work
 
 ##Updating 
+* On local machnine, copy new functions to converter/modelsdir/batchEdits.py
+* run ```sed -i -f before_commit.sed converter/modelsdir/batchEdits.py```. This removes command line only features and replaces them with web version equivalents.
+* Commit to GH
 * Log in to tricerashopper
 * sudo systemctl stop gunicorn
 * sudo su tricerashoper
