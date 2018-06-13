@@ -10,7 +10,7 @@ class batchEdits:
 
 
     def ER_ASP_EDIV(self, x, name='ER-ASP-EDIV'):
-        recs = utilities.BreakMARCFile(x)
+        recs = self.utilities.BreakMARCFile(x)
         for rec in recs:
         ##### Keep everything above this comment ########
         ##### Make changes to each record below ########
@@ -24,15 +24,15 @@ class batchEdits:
             rec.add_ordered_field(Field(tag = '710', indicators = ['\\', '2'], subfields = ['a','Alexander Street Press']))
             rec.add_ordered_field(Field(tag = '730', indicators = ['0', '\\'], subfields = ['a','Alexander Street Press.','p','Education in video.','5','OCU']))
             ###### Keep everything below this ########
-            rec = utilities.DeleteLocGov(rec)
-            rec = utilities.Standardize856_956(rec,'Alexander Street Press' )
-            rec = utilities.order_007(rec)
-            rec = utilities.AddEresourceGMD(rec)
+            rec = self.utilities.DeleteLocGov(rec)
+            rec = self.utilities.Standardize856_956(rec,'Alexander Street Press' )
+            rec = self.utilities.order_007(rec)
+            rec = self.utilities.AddEresourceGMD(rec)
         x = self.utilities.CreateMRC(recs)
         return x
 
     def ER_TF_CRC(self, x, name='ER-T&F-CRC'):
-        recs = utilities.BreakMARCFile(x)
+        recs = self.utilities.BreakMARCFile(x)
         for rec in recs:
             # Change =001 field to =002,
             rec.add_ordered_field(Field(tag = '002',data = 't&fcrc_' + rec['001'].value()))
@@ -50,17 +50,17 @@ class batchEdits:
             rec.add_ordered_field(Field(tag = '533', indicators = ['\\', '\\'], subfields = ['a', 'Electronic reproduction.']))
             rec.add_ordered_field(Field(tag = '506', indicators = ['\\', '\\'], subfields = ['a', 'Made available through Taylor & Francis. Access restricted to users at licensed institutions']))
             rec.add_ordered_field(Field(tag = '730', indicators = ['0', '\\'], subfields = ['a','Taylor & Francis (CRC Press).', '5', 'OCU']))
-            rec = utilities.DeleteLocGov(rec)
-            rec = utilities.AddEresourceGMD(rec)
-            rec = utilities.Standardize856_956(rec, 'Taylor & Francis')
-            #rec = utilities.DedupRecords(x)
+            rec = self.utilities.DeleteLocGov(rec)
+            rec = self.utilities.AddEresourceGMD(rec)
+            rec = self.utilities.Standardize856_956(rec, 'Taylor & Francis')
+            #rec = self.utilities.DedupRecords(x)
 
         x = self.utilities.CreateMRC(recs)
         return x
 
     def ER_OL_SPRebk(self, x, name='ER-O/L-SPRebk'):
         
-        recs = utilities.BreakMARCFile(x)
+        recs = self.utilities.BreakMARCFile(x)
         for rec in recs:
         ##### Keep everything above this comment ########
         ##### Make changes to each record below ########
@@ -71,15 +71,15 @@ class batchEdits:
             rec.add_ordered_field(Field(tag = '949', indicators = ['\\', '\\'], subfields = ['a', '*bn=bolin;']))
             rec.add_ordered_field(Field(tag = '949', indicators = ['\\', '1'], subfields = ['l','olink', 'r', 's', 't', '99']))
             ###### Keep everything below this ########
-            rec = utilities.DeleteLocGov(rec)
-            rec = utilities.AddEresourceGMD(rec)
+            rec = self.utilities.DeleteLocGov(rec)
+            rec = self.utilities.AddEresourceGMD(rec)
 
         x = self.utilities.CreateMRC(recs)
         return x
 
     def ER_OL_Safari(self, x, name='ER-O/L-Safari'):
         
-        recs = utilities.BreakMARCFile(x)
+        recs = self.utilities.BreakMARCFile(x)
         regexes = [
             re.compile(r'.*EBSCOhost.*\n'),
             re.compile(r'.*OhioLINK.*'),
@@ -100,15 +100,15 @@ class batchEdits:
             rec.add_ordered_field(Field(tag = '003',data = 'ER-O/L-Safari'))
             rec.add_ordered_field(Field(tag = '002',data = 'O/L-Safari'))
             ###### Keep everything below this ########
-            rec = utilities.DeleteLocGov(rec)
-            rec = utilities.AddEresourceGMD(rec)
+            rec = self.utilities.DeleteLocGov(rec)
+            rec = self.utilities.AddEresourceGMD(rec)
 
         x = self.utilities.CreateMRC(recs)
         return x
 
     def ER_OL_OSO(self, x, name='ER-O/L-OSO'):
         
-        recs = utilities.BreakMARCFile(x)
+        recs = self.utilities.BreakMARCFile(x)
         for rec in recs:
         ##### Keep everything above this comment ########
         ##### Make changes to each record below ########
@@ -118,15 +118,15 @@ class batchEdits:
             rec.add_ordered_field(Field(tag = '949', indicators = ['\\', '\\'], subfields = ['a', '*bn=bolin;']))
             rec.add_ordered_field(Field(tag = '949', indicators = ['\\', '1'], subfields = ['l','olink', 'r', 's', 't', '99']))
             ###### Keep everything below this ########
-            rec = utilities.DeleteLocGov(rec)
-            rec = utilities.AddEresourceGMD(rec)
+            rec = self.utilities.DeleteLocGov(rec)
+            rec = self.utilities.AddEresourceGMD(rec)
 
         x = self.utilities.CreateMRC(recs)
         return x
 
     def ER_OL_ACLS(self, x, name='ER-O/L-ACLS'):
         
-        recs = utilities.BreakMARCFile(x)
+        recs = self.utilities.BreakMARCFile(x)
         for rec in recs:
         ##### Keep everything above this comment ########
         ##### Make changes to each record below ########
@@ -137,15 +137,15 @@ class batchEdits:
             rec.add_ordered_field(Field(tag = '949', indicators = ['\\', '\\'], subfields = ['a', '*bn=bolin;']))
             rec.add_ordered_field(Field(tag = '949', indicators = ['\\', '1'], subfields = ['l','olink', 'r', 's', 't', '99']))
             ###### Keep everything below this ########
-            rec = utilities.DeleteLocGov(rec)
-            rec = utilities.AddEresourceGMD(rec)
+            rec = self.utilities.DeleteLocGov(rec)
+            rec = self.utilities.AddEresourceGMD(rec)
 
         x = self.utilities.CreateMRC(recs)
         return x
 
     def ER_OL_Wiley(self, x, name='ER-O/L-Wiley-InterSci'):
         
-        recs = utilities.BreakMARCFile(x)
+        recs = self.utilities.BreakMARCFile(x)
         for rec in recs:
         ##### Keep everything above this comment ########
         ##### Make changes to each record below ########
@@ -156,15 +156,15 @@ class batchEdits:
             rec.add_ordered_field(Field(tag = '949', indicators = ['\\', '\\'], subfields = ['a', '*bn=bolin;']))
             rec.add_ordered_field(Field(tag = '949', indicators = ['\\', '1'], subfields = ['l','olink', 'r', 's', 't', '99']))
             ###### Keep everything below this ########
-            rec = utilities.DeleteLocGov(rec)
-            rec = utilities.AddEresourceGMD(rec)
+            rec = self.utilities.DeleteLocGov(rec)
+            rec = self.utilities.AddEresourceGMD(rec)
 
         x = self.utilities.CreateMRC(recs)
         return x
 
     def ER_OL_UPSO(self, x, name='ER-O/L-UPSO'):
         
-        recs = utilities.BreakMARCFile(x)
+        recs = self.utilities.BreakMARCFile(x)
         for rec in recs:
         ##### Keep everything above this comment ########
         ##### Make changes to each record below ########
@@ -174,8 +174,8 @@ class batchEdits:
             rec.add_ordered_field(Field(tag = '949', indicators = ['\\', '\\'], subfields = ['a', '*bn=bolin;']))
             rec.add_ordered_field(Field(tag = '949', indicators = ['\\', '1'], subfields = ['l','olink', 'r', 's', 't', '99']))
             ###### Keep everything below this ########
-            rec = utilities.DeleteLocGov(rec)
-            rec = utilities.AddEresourceGMD(rec)
+            rec = self.utilities.DeleteLocGov(rec)
+            rec = self.utilities.AddEresourceGMD(rec)
 
         x = self.utilities.CreateMRC(recs)
         return x
@@ -183,7 +183,7 @@ class batchEdits:
 
     def ER_OL_APA_BOOKS(self, x, name='ER-O/L-APA Books'):
         
-        recs = utilities.BreakMARCFile(x)
+        recs = self.utilities.BreakMARCFile(x)
         for rec in recs:
         ##### Keep everything above this comment ########
         ##### Make changes to each record below ########
@@ -193,8 +193,8 @@ class batchEdits:
             rec.add_ordered_field(Field(tag = '949', indicators = ['\\', '\\'], subfields = ['a', '*bn=bolin;']))
             rec.add_ordered_field(Field(tag = '949', indicators = ['\\', '1'], subfields = ['l','olink', 'r', 's', 't', '99']))
             ###### Keep everything below this ########
-            rec = utilities.DeleteLocGov(rec)
-            rec = utilities.AddEresourceGMD(rec)
+            rec = self.utilities.DeleteLocGov(rec)
+            rec = self.utilities.AddEresourceGMD(rec)
 
         x = self.utilities.CreateMRC(recs)
         return x
