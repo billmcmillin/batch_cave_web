@@ -59,7 +59,6 @@ class batchEdits:
         return x
 
     def ER_OL_SPRebk(self, x, name='ER-O/L-SPRebk'):
-        
         recs = self.utilities.BreakMARCFile(x)
         for rec in recs:
         ##### Keep everything above this comment ########
@@ -78,7 +77,6 @@ class batchEdits:
         return x
 
     def ER_OL_Safari(self, x, name='ER-O/L-Safari'):
-        
         recs = self.utilities.BreakMARCFile(x)
         regexes = [
             re.compile(r'.*EBSCOhost.*\n'),
@@ -107,7 +105,6 @@ class batchEdits:
         return x
 
     def ER_OL_OSO(self, x, name='ER-O/L-OSO'):
-        
         recs = self.utilities.BreakMARCFile(x)
         for rec in recs:
         ##### Keep everything above this comment ########
@@ -125,7 +122,6 @@ class batchEdits:
         return x
 
     def ER_OL_ACLS(self, x, name='ER-O/L-ACLS'):
-        
         recs = self.utilities.BreakMARCFile(x)
         for rec in recs:
         ##### Keep everything above this comment ########
@@ -139,12 +135,10 @@ class batchEdits:
             ###### Keep everything below this ########
             rec = self.utilities.DeleteLocGov(rec)
             rec = self.utilities.AddEresourceGMD(rec)
-
         x = self.utilities.CreateMRC(recs)
         return x
 
     def ER_OL_Wiley(self, x, name='ER-O/L-Wiley-InterSci'):
-        
         recs = self.utilities.BreakMARCFile(x)
         for rec in recs:
         ##### Keep everything above this comment ########
@@ -163,7 +157,6 @@ class batchEdits:
         return x
 
     def ER_OL_UPSO(self, x, name='ER-O/L-UPSO'):
-        
         recs = self.utilities.BreakMARCFile(x)
         for rec in recs:
         ##### Keep everything above this comment ########
@@ -182,7 +175,6 @@ class batchEdits:
 
 
     def ER_OL_APA_BOOKS(self, x, name='ER-O/L-APA Books'):
-        
         recs = self.utilities.BreakMARCFile(x)
         for rec in recs:
         ##### Keep everything above this comment ########
@@ -195,7 +187,6 @@ class batchEdits:
             ###### Keep everything below this ########
             rec = self.utilities.DeleteLocGov(rec)
             rec = self.utilities.AddEresourceGMD(rec)
-
         x = self.utilities.CreateMRC(recs)
         return x
 
@@ -234,15 +225,27 @@ class batchEdits:
             rec.add_ordered_field(Field(tag = '533', indicators = ['\\','\\'],subfields = ['a','Electronic reproduction.', 'b', 'Cambridge, Mass.', 'c', 'National Bureau of Economic Research,', 'd', '200-', 'e', '1 electronic text : PDF file.', 'f', 'NBER working paper series.', 'n', 'Access restricted to patrons at subscribing institutions']))
             rec.add_ordered_field(Field(tag = '003',data = 'ER-NBER'))
             # 530 field, change Hardcopy to Print
-            rec['530']['a'] = 'Print version available to institutional subscribers.'
+            try:
+                rec['530']['a'] = 'Print version available to institutional subscribers.'
+            except:
+                rec.add_ordered_field(Field(tag = '530', indicators =['\\','\\'],subfields = ['a','Print version available to institutional subscribers.']))
             # 490 and 830 fields lack ISBD punctuation, supply where lacking
             #x = re.sub('(?m)^(=490.*)[^ ;](\$v.*)', '\\1 ;\\2', x)
-            four90a = rec['490']['a'] + ' ;'
-            rec['490']['a'] = four90a
-            eight30a = rec['830']['a'] + ' ;'
-            rec['830']['a'] = eight30a
+            try:
+                four90a = rec['490']['a'] + ' ;'
+                rec['490']['a'] = four90a
+            except:
+                rec.add_ordered_field(Field(tag = '490', indicators =['\\','\\'],subfields = ['a',' : ']))
+            try:
+                eight30a = rec['830']['a'] + ' ;'
+                rec['830']['a'] = eight30a
+            except:
+                rec.add_ordered_field(Field(tag = '830', indicators =['\\','\\'],subfields = ['a',' : ']))
             # delete supplied 690 fields
-            rec.remove_field(rec.get_fields('690')[0])
+            try:
+                rec.remove_field(rec.get_fields('690')[0])
+            except:
+                pass
             rec = self.utilities.DeleteLocGov(rec)
             rec = self.utilities.Standardize856_956(rec, 'NBER')
             rec = self.utilities.AddEresourceGMD(rec)
